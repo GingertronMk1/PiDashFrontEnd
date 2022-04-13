@@ -1,24 +1,7 @@
-# flask-frontend
+# PiDashFrontEnd
 
-## Project setup
-```
-npm install
-```
+[![CodeFactor](https://www.codefactor.io/repository/github/gingertronmk1/pidashfrontend/badge)](https://www.codefactor.io/repository/github/gingertronmk1/pidashfrontend)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This is a Vue SPA in the purest sense - it's just one page!
+It connects using `axios` to the [PiDashBackEnd](https://github.com/GingertronMk1/PiDashBackEnd), from where it gets all the system information to display.
+See the backend's README for what data it shows.
