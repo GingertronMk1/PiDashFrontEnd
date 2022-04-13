@@ -58,6 +58,17 @@ const torrents = computed(() => {
 
   th {
     border-bottom: 2px solid white;
+
+    &:nth-of-type(1) {
+      width: 60%;
+      min-width: 400px;
+    }
+
+    &:nth-of-type(2),
+    &:nth-of-type(3) {
+      width: 20%;
+      min-width: 100px;
+    }
   }
 
   th,
