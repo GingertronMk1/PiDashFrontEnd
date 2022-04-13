@@ -4,8 +4,8 @@ import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 
 const props = defineProps({
   data: {
-    type: [Array, null],
-    default: () => [],
+    type: [Object, null],
+    default: () => ({}),
   },
 });
 
