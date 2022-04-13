@@ -3,6 +3,7 @@ import { ref } from "vue";
 import CPU from "@/components/CPU.vue";
 import Memory from "@/components/Memory.vue";
 import Disk from "@/components/Disk.vue";
+import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
 
 const data = ref({
@@ -20,6 +21,10 @@ const data = ref({
   },
   disk: {
     url: "/disk",
+    data: null,
+  },
+  temperatures: {
+    url: "/temperatures",
     data: null,
   },
   transmission: {
@@ -53,6 +58,7 @@ setInterval(updateData, 1000);
       <CPU :data="data.cpu.data" />
       <Memory :data="data.memory.data" />
       <Disk :data="data.disk.data" />
+      <Temperatures :data="data.temperatures.data" />
     </div>
     <div class="widgets__column">
       <Transmission :data="data.transmission.data" />
