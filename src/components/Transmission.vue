@@ -18,23 +18,51 @@ const torrents = computed(() => {
   const {
     arguments: { torrents },
   } = data;
-  return torrents ?? [];
+  return (torrents ?? []).map((torrent) => ({
+    ...torrent,
+    downloadRateMBPS: (torrent.rateDownload / 1024 / 1024).toFixed(2),
+  }));
 });
 </script>
 <template>
-  <WidgetTemplate v-if="torrents.length">
+  <WidgetTemplate v-if="torrents.length" class="transmission-widget">
     <template #header>Transmission</template>
-    <table>
+    <table cellspacing="0">
       <thead>
         <th>Name</th>
         <th>% done</th>
+        <th>Download Speed</th>
       </thead>
       <tbody>
         <tr v-for="(torrent, index) in torrents" :key="`torrent${index}`">
           <td v-text="torrent.name" />
-          <td v-text="`${(torrent.percentDone * 100).toFixed(2)}%`" />
+          <td
+            class="transmission-widget__number-cell"
+            v-text="`${(torrent.percentDone * 100).toFixed(2)}%`"
+          />
+          <td
+            class="transmission-widget__number-cell"
+            v-text="`${torrent.downloadRateMBPS}MB/s`"
+          />
         </tr>
       </tbody>
     </table>
   </WidgetTemplate>
 </template>
+
+<style lang="scss">
+.transmission-widget {
+  &__number-cell {
+    text-align: center;
+  }
+
+  th {
+    border-bottom: 2px solid white;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+  }
+}
+</style>
