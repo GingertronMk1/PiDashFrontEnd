@@ -23,55 +23,62 @@ const defineBarColour = (core) => {
 <template>
   <WidgetTemplate v-if="data" class="cpu-widget">
     <template #header>CPU</template>
-    <table>
-      <thead>
-        <th v-for="(core, index) in data" :key="index" v-text="index" />
-      </thead>
-      <tbody>
-        <tr class="cpu-widget__graph-row">
-          <td v-for="(core, index) in data" :key="`bar${index}`">
-            <span
-              class="cpu-widget__graph-bar"
-              :style="{
-                height: `${core}%`,
-                backgroundColor: defineBarColour(core),
-              }"
-            />
-          </td>
-        </tr>
-        <tr>
-          <td
-            v-for="(core, index) in data"
-            :key="index"
-            v-text="`${core.toFixed(0)}%`"
-          />
-        </tr>
-      </tbody>
-    </table>
+    <div class="cpu-widget__graph">
+      <div
+        v-for="(core, index) in data"
+        :key="`core${index}`"
+        class="cpu-widget__line"
+      >
+        <span class="cpu-widget__cpu-number" v-text="index" />
+        <span
+          class="cpu-widget__bar"
+          :style="{
+            width: `${core}%`,
+            backgroundColor: defineBarColour(core),
+          }"
+        />
+        <span class="cpu-widget__cpu-percent" v-text="`${core.toFixed(0)}%`" />
+      </div>
+    </div>
   </WidgetTemplate>
 </template>
 
 <style lang="scss">
 .cpu-widget {
-  th {
-    min-width: 3rem;
-  }
-  td {
-    text-align: center;
-  }
-
-  &__graph-row > td {
-    height: 5rem;
-    min-height: 5rem;
-    vertical-align: bottom;
-  }
-
-  &__graph-bar {
+  &__graph {
     display: flex;
-    background-color: white;
-    height: 100%;
-    width: 100%;
-    margin-top: auto;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  &__line {
+    height: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    & + & {
+      margin-top: 1rem;
+    }
+  }
+
+  &__cpu-number {
+    width: 2rem;
+    min-width: 2rem;
+    max-width: 2rem;
+  }
+
+  &__cpu-percent {
+    width: 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
+    text-align: right;
+  }
+
+  &__bar {
+    margin-right: auto;
   }
 }
 </style>
