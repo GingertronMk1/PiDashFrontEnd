@@ -1,90 +1,88 @@
 <script setup>
-  
-  import { ref } from "vue";
+import { ref } from "vue";
+import CPU from "@/components/CPU.vue";
+import Memory from "@/components/Memory.vue";
+import Disk from "@/components/Disk.vue";
+import Transmission from "@/components/Transmission.vue";
 
-  const data = ref({
-    cpu: {
-      url: "/cpu",
-      data: null,
-    },
-    memory: {
-      url: "/memory",
-      data: null,
-    },
-    disk: {
-      url: "/disk",
-      data: null,
-    },
-    transmission: {
-      url: "/transmission",
-      data: null,
-    }
-  });
+const data = ref({
+  time: {
+    function: () => new Date().toLocaleString(),
+    data: new Date().toLocaleString(),
+  },
+  cpu: {
+    url: "/cpu",
+    data: null,
+  },
+  memory: {
+    url: "/memory",
+    data: null,
+  },
+  disk: {
+    url: "/disk",
+    data: null,
+  },
+  transmission: {
+    url: "/transmission",
+    data: null,
+  },
+});
 
 const updateData = () => {
-  Object.entries(data.value).forEach(([key, { url }]) => {
-    axios.get(url).then(({ data: returnedData }) => data.value[key].data = returnedData);
+  Object.entries(data.value).forEach(([key, value]) => {
+    if (value.url) {
+      axios
+        .get(value.url)
+        .then(
+          ({ data: returnedData }) => (data.value[key].data = returnedData)
+        );
+    } else if (value.function) {
+      data.value[key].data = value.function();
+    }
   });
-}
+};
 
 updateData();
 setInterval(updateData, 1000);
-
-function bytesToMegabytes(bytes) {
-  return (Number.parseInt(bytes) / 1024 / 1024).toFixed(2);
-}
-
-function bytesToGigabytes(bytes) {
-  return (Number.parseFloat(bytesToMegabytes(bytes)) / 1024).toFixed(2);
-}
-  
 </script>
 <template>
-  Hello world!
-  
-  <h3>CPU</h3>
-  <table id="cpu-table" v-if="data.cpu.data">
-    <thead>
-      <th v-for="(core, index) in data.cpu.data" :key="index" v-text="index" />
-    </thead>
-    <tbody>
-      <tr>
-        <td v-for="(core, index) in data.cpu.data" :key="index" v-text="core.toFixed(0)" />
-      </tr>
-    </tbody>
-  </table>
-  <template v-if="data.memory.data">
-  <h3>Memory</h3>
-  <span v-text="`${bytesToMegabytes(data.memory.data.available)}MB available of ${bytesToMegabytes(data.memory.data.total)}MB`" />
-  </template>
+  <h1 v-text="data.time.data" />
 
-<template v-if="data.disk.data">
-  <h3>Disk</h3>
-  <span v-text="`${bytesToGigabytes(data.disk.data.free)}GB available of ${bytesToGigabytes(data.disk.data.total)}GB`" />
-</template>
-  <template v-if="data.transmission.data?.arguments?.torrents">
-    <table>
-      <thead>
-        <th>Name</th>
-        <th>% done</th>
-      </thead>
-      <tbody>
-        <tr v-for="(torrent, index) in data.transmission.data.arguments.torrents" :key="`torrent${index}`">
-          <td v-text="torrent.name" />
-          <td v-text="`${(torrent.percentDone * 100).toFixed(2)}%`" />
-        </tr>
-      </tbody>
-    </table>
-  </template>
-
-
+  <div class="widgets">
+    <div class="widgets__column">
+      <CPU :data="data.cpu.data" />
+      <Memory :data="data.memory.data" />
+      <Disk :data="data.disk.data" />
+    </div>
+    <div class="widgets__column">
+      <Transmission :data="data.transmission.data" />
+    </div>
+  </div>
 </template>
 <style lang="scss">
-#cpu-table {
-  border-collapse: collapse;
-  td {
-    min-width: 50px;
-    text-align: center;
+@import "@/assets/style.scss";
+
+h1 {
+  text-align: center;
+}
+
+.widgets {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &__column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+
+    & > * + * {
+      margin-top: 1rem;
+    }
   }
 }
+
 </style>
