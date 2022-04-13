@@ -63,6 +63,10 @@ const torrents = computed(() => {
   th,
   td {
     padding: 0.5rem;
+
+    & + * {
+      border-left: 2px solid white;
+    }
   }
 }
 </style>
