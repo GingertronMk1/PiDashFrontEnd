@@ -1,9 +1,9 @@
 <script setup></script>
 <template>
   <div class="widget">
-    <div v-if="$slots.header" class="widget__header">
+    <h3 v-if="$slots.header" class="widget__header">
       <slot name="header" />
-    </div>
+    </h3>
     <div class="widget__body"><slot /></div>
   </div>
 </template>
@@ -18,7 +18,7 @@
   }
 
   &__header {
-    font-size: 2rem;
+    margin: 0;
   }
 }
 </style>

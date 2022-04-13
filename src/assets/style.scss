@@ -14,3 +14,9 @@ html, body, #app {
   justify-content: flex-start;
   align-items: stretch;
 }
+
+@for $h from 1 through 6 {
+  h#{$h} {
+    font-size: calc(6rem / $h);
+  }
+}
