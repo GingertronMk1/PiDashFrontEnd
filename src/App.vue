@@ -38,9 +38,8 @@ const updateData = () => {
     if (value.url) {
       axios
         .get(value.url)
-        .then(
-          ({ data: returnedData }) => (data.value[key].data = returnedData)
-        );
+        .then(({ data: returnedData }) => (data.value[key].data = returnedData))
+        .catch(console.error);
     } else if (value.function) {
       data.value[key].data = value.function();
     }
