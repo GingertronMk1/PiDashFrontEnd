@@ -78,11 +78,9 @@ h1 {
     justify-content: space-between;
     padding: 0 1rem;
 
-
     & > * + * {
       margin-top: 1rem;
     }
   }
 }
-
 </style>
