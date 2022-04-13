@@ -20,5 +20,12 @@
   &__header {
     margin: 0;
   }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
 }
 </style>
