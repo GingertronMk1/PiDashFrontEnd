@@ -20,14 +20,14 @@ const torrents = computed(() => {
   } = data;
   return (torrents ?? []).map((torrent) => ({
     ...torrent,
-    downloadRateMBPS: (torrent.rateDownload / 1024 / 1024).toFixed(2),
+    downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(2)}MB/s`,
   }));
 });
 </script>
 <template>
   <WidgetTemplate v-if="torrents.length" class="transmission-widget">
     <template #header>Transmission</template>
-    <table cellspacing="0">
+    <table>
       <thead>
         <th>Name</th>
         <th>% done</th>
@@ -42,7 +42,7 @@ const torrents = computed(() => {
           />
           <td
             class="transmission-widget__number-cell"
-            v-text="`${torrent.downloadRateMBPS}MB/s`"
+            v-text="torrent.downloadRateMBPS"
           />
         </tr>
       </tbody>
@@ -57,8 +57,6 @@ const torrents = computed(() => {
   }
 
   th {
-    border-bottom: 2px solid white;
-
     &:nth-of-type(1) {
       width: 60%;
       min-width: 400px;
@@ -68,15 +66,6 @@ const torrents = computed(() => {
     &:nth-of-type(3) {
       width: 20%;
       min-width: 100px;
-    }
-  }
-
-  th,
-  td {
-    padding: 0.5rem;
-
-    & + * {
-      border-left: 2px solid white;
     }
   }
 }
