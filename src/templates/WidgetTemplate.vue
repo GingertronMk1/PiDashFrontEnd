@@ -20,6 +20,10 @@
   &__header {
     margin: 0;
     padding-bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
   &__body {
