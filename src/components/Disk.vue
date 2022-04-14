@@ -1,13 +1,8 @@
 <script setup>
-import { computed } from "vue";
+import { ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 
-const props = defineProps({
-  data: {
-    type: [null, Object],
-    default: null,
-  },
-});
+const data = ref({});
 
 const bytesToGigaBytes = (bytes) => (bytes / 1024 ** 3).toFixed(2);
 
@@ -20,18 +15,16 @@ const diskInfoToHuman = ({ used, free, total, percent }) => {
   };
 };
 
-const computedData = computed(() => {
-  const { data } = props;
-  const ret = {};
-  if (!data) {
-    return ret;
-  }
-
-  Object.entries(data).forEach(([key, value]) => {
-    ret[key] = diskInfoToHuman(value);
+function updateData() {
+  axios.get("/disk").then(({ data: newData }) => {
+    Object.entries(newData).forEach(([key, value]) => {
+      data.value[key] = diskInfoToHuman(value);
+    });
   });
-  return ret;
-});
+}
+
+updateData();
+setInterval(updateData, 1000);
 </script>
 <template>
   <WidgetTemplate v-if="data">
@@ -45,7 +38,7 @@ const computedData = computed(() => {
         <th>% Used</th>
       </thead>
       <tbody>
-        <tr v-for="(stats, mountpoint) in computedData" :key="mountpoint">
+        <tr v-for="(stats, mountpoint) in data" :key="mountpoint">
           <td v-text="mountpoint" />
           <td v-text="stats.used" />
           <td v-text="stats.free" />

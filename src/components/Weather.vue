@@ -1,17 +1,31 @@
 <script setup>
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
-const props = defineProps({
-  data: {
-    type: [null, Object],
-    default: null,
-  },
-});
+const data = ref(null);
+
+function updateData() {
+  navigator.geolocation.getCurrentPosition(({ coords }) => {
+    axios
+      .get("https://api.openweathermap.org/data/2.5/weather", {
+        params: {
+          lat: coords.latitude,
+          lon: coords.longitude,
+          appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+        },
+      })
+      .then(({ data: newData }) => {
+        data.value = newData;
+      });
+  });
+}
 
 const kelvinToCelcius = (kelvin) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
+
+updateData();
+setInterval(updateData, 60000);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="weather">

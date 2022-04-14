@@ -1,33 +1,24 @@
 <script setup>
-import { computed } from "vue";
+import { ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 
-const props = defineProps({
-  data: {
-    type: [null, Object],
-    default: null,
-  },
-});
+const data = ref({});
 
-const computedData = computed(() => {
-  const { data } = props;
-  if (!data) {
-    return {};
-  }
+function updateData() {
+  axios.get("/memory").then(({ data: { available, total } }) => {
+    data.value = {
+      available: (Number.parseInt(available) / 1024 / 1024).toFixed(2),
+      total: (Number.parseInt(total) / 1024 / 1024).toFixed(2),
+    };
+  });
+}
 
-  return {
-    available: (Number.parseInt(data.available) / 1024 / 1024).toFixed(2),
-    total: (Number.parseInt(data.total) / 1024 / 1024).toFixed(2),
-  };
-});
+updateData();
+setInterval(updateData, 1000);
 </script>
 <template>
   <WidgetTemplate v-if="data">
     <template #header>Memory</template>
-    <span
-      v-text="
-        `${computedData.available}MB available of ${computedData.total}MB`
-      "
-    />
+    <span v-text="`${data.available}MB available of ${data.total}MB`" />
   </WidgetTemplate>
 </template>

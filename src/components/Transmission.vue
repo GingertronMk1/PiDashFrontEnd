@@ -1,31 +1,31 @@
 <script setup>
-import { computed } from "vue";
+import { ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 
-const props = defineProps({
-  data: {
-    type: [Object, null],
-    default: () => ({}),
-  },
-});
+const data = ref([]);
 
-const torrents = computed(() => {
-  const { data } = props;
-  if (!data) {
-    return [];
-  }
+function updateData() {
+  axios.get("/transmission").then(
+    ({
+      data: {
+        arguments: { torrents },
+      },
+    }) => {
+      data.value = (torrents ?? []).map((torrent) => ({
+        ...torrent,
+        downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(
+          2
+        )}MB/s`,
+      }));
+    }
+  );
+}
 
-  const {
-    arguments: { torrents },
-  } = data;
-  return (torrents ?? []).map((torrent) => ({
-    ...torrent,
-    downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(2)}MB/s`,
-  }));
-});
+updateData();
+setInterval(updateData, 1000);
 </script>
 <template>
-  <WidgetTemplate v-if="torrents.length" class="transmission-widget">
+  <WidgetTemplate v-if="data.length" class="transmission-widget">
     <template #header>Transmission</template>
     <table>
       <thead>
@@ -34,7 +34,7 @@ const torrents = computed(() => {
         <th>Download Speed</th>
       </thead>
       <tbody>
-        <tr v-for="(torrent, index) in torrents" :key="`torrent${index}`">
+        <tr v-for="(torrent, index) in data" :key="`torrent${index}`">
           <td v-text="torrent.name" />
           <td
             class="transmission-widget__number-cell"

@@ -1,11 +1,17 @@
 <script setup>
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-defineProps({
-  data: {
-    type: [null, Array],
-    default: null,
-  },
-});
+import { ref } from "vue";
+
+const data = ref([]);
+
+function updateData() {
+  axios.get("/cpu").then(({ data: newData }) => {
+    data.value = newData;
+  });
+}
+
+updateData();
+setInterval(updateData, 1000);
 
 const defineBarColour = (core) => {
   if (core > 75) {

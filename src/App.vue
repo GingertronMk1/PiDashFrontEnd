@@ -7,125 +7,27 @@ import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
 import Weather from "@/components/Weather.vue";
 
-let locationData = null;
-const getLocationData = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => (locationData = coords),
-      (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            console.log("User denied the request for Geolocation.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            console.log("Location information is unavailable.");
-            break;
-          case error.TIMEOUT:
-            console.log("The request to get user location timed out.");
-            break;
-          case error.UNKNOWN_ERROR:
-            console.log("An unknown error occurred.");
-            break;
-        }
-      }
-    );
-  }
-};
-getLocationData();
+const time = ref(new Date().toLocaleString());
 
-const data = ref({
-  time: {
-    function: () => new Date().toLocaleString(),
-    data: new Date().toLocaleString(),
-  },
-  cpu: {
-    url: "/cpu",
-    data: null,
-  },
-  memory: {
-    url: "/memory",
-    data: null,
-  },
-  disk: {
-    url: "/disk",
-    data: null,
-  },
-  temperatures: {
-    url: "/temperatures",
-    data: null,
-  },
-  transmission: {
-    url: "/transmission",
-    data: null,
-  },
-  weather: {
-    data: null,
-    secondsBetween: 60,
-    function: async () => {
-      const pus = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
-
-      const { latitude, longitude } = pus.coords;
-
-      return await axios
-        .get("https://api.openweathermap.org/data/2.5/weather", {
-          params: {
-            lat: latitude,
-            lon: longitude,
-            appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-          },
-        })
-        .then(({ data }) => data);
-    },
-  },
-});
-
-const updateData = () => {
-  Object.entries(data.value).forEach(async ([key, value]) => {
-    if (value.secondsBetween !== undefined) {
-      if (value.secondsSince !== undefined) {
-        if (value.secondsSince >= value.secondsBetween) {
-          data.value[key].secondsSince = 0;
-        } else {
-          data.value[key].secondsSince += 1;
-          return;
-        }
-      } else {
-        data.value[key].secondsSince = 0;
-      }
-    }
-    if (value.url) {
-      axios
-        .get(value.url)
-        .then(({ data: returnedData }) => (data.value[key].data = returnedData))
-        .catch(console.error);
-    } else if (value.function) {
-      if (value.function.constructor.name === "AsyncFunction") {
-        data.value[key].data = await value.function();
-      } else {
-        data.value[key].data = value.function();
-      }
-    }
-  });
+const updateTime = () => {
+  time.value = new Date().toLocaleString();
 };
 
-updateData();
-setInterval(updateData, 1000);
+setInterval(updateTime, 1000);
 </script>
 <template>
-  <h1 v-text="data.time.data" />
+  <h1 v-text="time" />
 
   <div class="widgets">
     <div class="widgets__column">
-      <CPU :data="data.cpu.data" />
-      <Memory :data="data.memory.data" />
-      <Disk :data="data.disk.data" />
-      <Temperatures :data="data.temperatures.data" />
+      <CPU />
+      <Memory />
+      <Disk />
+      <Temperatures />
     </div>
     <div class="widgets__column">
-      <Transmission :data="data.transmission.data" />
-      <Weather :data="data.weather.data" />
+      <Transmission />
+      <Weather />
     </div>
   </div>
 </template>
