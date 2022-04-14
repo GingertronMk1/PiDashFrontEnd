@@ -4,20 +4,27 @@ import { computed, ref } from "vue";
 
 const data = ref(null);
 
-function updateData() {
-  navigator.geolocation.getCurrentPosition(({ coords }) => {
-    axios
-      .get("https://api.openweathermap.org/data/2.5/weather", {
-        params: {
-          lat: coords.latitude,
-          lon: coords.longitude,
-          appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-        },
-      })
-      .then(({ data: newData }) => {
-        data.value = newData;
-      });
-  });
+const coords = {
+  latitude: process.env.VUE_APP_LATITUDE,
+  longitude: process.env.VUE_APP_LONGITUDE,
+};
+
+async function updateData() {
+  if (!(coords.latitude && coords.longitude)) {
+    console.log("Grabbing coordinates");
+    coords = await new Promise(navigator.geolocation.getCurrentPosition).then(
+      ({ coords }) => coords
+    );
+  }
+  data.value = await axios
+    .get("https://api.openweathermap.org/data/2.5/weather", {
+      params: {
+        lat: coords.latitude,
+        lon: coords.longitude,
+        appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+      },
+    })
+    .then(({ data }) => data);
 }
 
 const kelvinToCelcius = (kelvin) => {
