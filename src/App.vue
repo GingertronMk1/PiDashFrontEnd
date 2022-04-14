@@ -5,6 +5,33 @@ import Memory from "@/components/Memory.vue";
 import Disk from "@/components/Disk.vue";
 import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
+import Weather from "@/components/Weather.vue";
+
+let locationData = null;
+const getLocationData = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => (locationData = coords),
+      (error) => {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            console.log("User denied the request for Geolocation.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            console.log("Location information is unavailable.");
+            break;
+          case error.TIMEOUT:
+            console.log("The request to get user location timed out.");
+            break;
+          case error.UNKNOWN_ERROR:
+            console.log("An unknown error occurred.");
+            break;
+        }
+      }
+    );
+  }
+};
+getLocationData();
 
 const data = ref({
   time: {
@@ -31,17 +58,54 @@ const data = ref({
     url: "/transmission",
     data: null,
   },
+  weather: {
+    data: null,
+    secondsBetween: 60,
+    function: async () => {
+      const pus = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+
+      const { latitude, longitude } = pus.coords;
+
+      return await axios
+        .get("https://api.openweathermap.org/data/2.5/weather", {
+          params: {
+            lat: latitude,
+            lon: longitude,
+            appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+          },
+        })
+        .then(({ data }) => data);
+    },
+  },
 });
 
 const updateData = () => {
-  Object.entries(data.value).forEach(([key, value]) => {
+  Object.entries(data.value).forEach(async ([key, value]) => {
+    if (value.secondsBetween !== undefined) {
+      if (value.secondsSince !== undefined) {
+        if (value.secondsSince >= value.secondsBetween) {
+          data.value[key].secondsSince = 0;
+        } else {
+          data.value[key].secondsSince += 1;
+          return;
+        }
+      } else {
+        data.value[key].secondsSince = 0;
+      }
+    }
     if (value.url) {
       axios
         .get(value.url)
         .then(({ data: returnedData }) => (data.value[key].data = returnedData))
         .catch(console.error);
     } else if (value.function) {
-      data.value[key].data = value.function();
+      if (value.function.constructor.name === "AsyncFunction") {
+        data.value[key].data = await value.function();
+      } else {
+        data.value[key].data = value.function();
+      }
     }
   });
 };
@@ -61,6 +125,7 @@ setInterval(updateData, 1000);
     </div>
     <div class="widgets__column">
       <Transmission :data="data.transmission.data" />
+      <Weather :data="data.weather.data" />
     </div>
   </div>
 </template>
@@ -80,7 +145,7 @@ h1 {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 1rem;
 
     & > * + * {
