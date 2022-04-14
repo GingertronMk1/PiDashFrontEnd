@@ -19,6 +19,7 @@
 
   &__header {
     margin: 0;
+    padding-bottom: 0;
   }
 
   &__body {
