@@ -9,24 +9,50 @@ const props = defineProps({
   },
 });
 
+const bytesToGigaBytes = (bytes) => (bytes / 1024 ** 3).toFixed(2);
+
+const diskInfoToHuman = ({ used, free, total, percent }) => {
+  return {
+    used: `${bytesToGigaBytes(used)}GB`,
+    free: `${bytesToGigaBytes(free)}GB`,
+    total: `${bytesToGigaBytes(total)}GB`,
+    percent: `${percent}%`,
+  };
+};
+
 const computedData = computed(() => {
   const { data } = props;
+  const ret = {};
   if (!data) {
-    return {};
+    return ret;
   }
-  return {
-    available: (Number.parseInt(data.free) / 1024 ** 3).toFixed(2),
-    total: (Number.parseInt(data.total) / 1024 ** 3).toFixed(2),
-  };
+
+  Object.entries(data).forEach(([key, value]) => {
+    ret[key] = diskInfoToHuman(value);
+  });
+  return ret;
 });
 </script>
 <template>
   <WidgetTemplate v-if="data">
     <template #header>Disk</template>
-    <span
-      v-text="
-        `${computedData.available}GB available of ${computedData.total}GB`
-      "
-    />
+    <table>
+      <thead>
+        <th>Mount Point</th>
+        <th>Used</th>
+        <th>Free</th>
+        <th>Total</th>
+        <th>% Used</th>
+      </thead>
+      <tbody>
+        <tr v-for="(stats, mountpoint) in computedData" :key="mountpoint">
+          <td v-text="mountpoint" />
+          <td v-text="stats.used" />
+          <td v-text="stats.free" />
+          <td v-text="stats.total" />
+          <td v-text="stats.percent" />
+        </tr>
+      </tbody>
+    </table>
   </WidgetTemplate>
 </template>

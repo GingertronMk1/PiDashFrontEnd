@@ -20,3 +20,21 @@ html, body, #app {
     font-size: calc(6rem / $h);
   }
 }
+
+table {
+  border-collapse: collapse;
+
+  th {
+    border-bottom: 2px solid white;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+
+    & + * {
+      border-left: 2px solid white;
+    }
+  }
+
+}
