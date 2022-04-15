@@ -1,13 +1,15 @@
 <script setup>
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { computed } from "vue";
+import { ref } from "vue";
 
-const props = defineProps({
-  data: {
-    type: [null, Array],
-    default: null,
-  },
-});
+const data = ref(null);
+
+function updateData() {
+  return;
+}
+
+updateData();
+setInterval(updateData, 1000);
 </script>
 <template>
   <WidgetTemplate v-if="data"> </WidgetTemplate>
