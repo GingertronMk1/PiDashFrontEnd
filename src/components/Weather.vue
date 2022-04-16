@@ -4,18 +4,29 @@ import { computed, ref } from "vue";
 
 const data = ref(null);
 
-const coords = {
+let coords = {
   latitude: process.env.VUE_APP_LATITUDE,
   longitude: process.env.VUE_APP_LONGITUDE,
 };
 
 async function updateData() {
-  if (!(coords.latitude && coords.longitude)) {
-    console.log("Grabbing coordinates");
-    coords = await new Promise(navigator.geolocation.getCurrentPosition).then(
-      ({ coords }) => coords
-    );
-  }
+  console.log("Grabbing coordinates");
+  coords = await new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  )
+    .then(({ coords: { latitude, longitude } }) => {
+      console.log("Got coords from navigator");
+      return {
+        latitude,
+        longitude,
+      };
+    })
+    .catch((err) => {
+      console.log("Falling back to env values");
+      console.error(err);
+      return coords;
+    });
+  console.log(coords);
   data.value = await axios
     .get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
