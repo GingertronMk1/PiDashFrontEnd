@@ -21,8 +21,8 @@ jobs:
           key: nm-PiDashFrontEnd-${{ hashFiles('./package-lock.json') }}
       - name: NPM
         if: steps.cache-node-modules.outputs.cache != 'true'
-        run: npm install
-      - name: Make env file
+        run: npm ci
+      - name: Build the program
         env:
             VUE_APP_PI_URL: ${{ secrets.VUE_APP_PI_URL }}
             VUE_APP_OPENWEATHERMAP_API_KEY: ${{ secrets.VUE_APP_OPENWEATHERMAP_API_KEY }}
@@ -30,24 +30,12 @@ jobs:
             VUE_APP_RPC_PASSWORD: ${{ secrets.VUE_APP_RPC_PASSWORD }}
             VUE_APP_LATITUDE: ${{ secrets.VUE_APP_LATITUDE }}
             VUE_APP_LONGITUDE: ${{ secrets.VUE_APP_LONGITUDE }}
+        run: npm run build
+      - name: Commit to built-main branch
         run: |
-          echo $VUE_APP_PI_URL
-          touch .env
-      #     echo "
-      #       VUE_APP_PI_URL=$VUE_APP_PI_URL
-      #       VUE_APP_OPENWEATHERMAP_API_KEY=$VUE_APP_OPENWEATHERMAP_API_KEY
-      #       VUE_APP_RPC_USERNAME=$VUE_APP_RPC_USERNAME
-      #       VUE_APP_RPC_PASSWORD=$VUE_APP_RPC_PASSWORD
-      #       VUE_APP_LATITUDE=$VUE_APP_LATITUDE
-      #       VUE_APP_LONGITUDE=$VUE_APP_LONGITUDE" >> .env
-      #     cat .env
-      # - name: Build the program
-      #   run: npm run build
-      # - name: Commit to built-main branch
-      #   run: |
-      #     git config user.name github-actions
-      #     git config user.email github-actions@github.com
-      #     ls dist
-      #     git add dist -f
-      #     git commit -m "Deployment at $(date +%Y-%m-%dT%H:%M:%S%z)"
-      #     git push origin `git subtree split --prefix dist main`:built-main --force
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          ls dist
+          git add dist -f
+          git commit -m "Deployment at $(date +%Y-%m-%dT%H:%M:%S%z)"
+          git push origin `git subtree split --prefix dist main`:built-main --force
