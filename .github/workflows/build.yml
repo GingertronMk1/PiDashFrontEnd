@@ -32,6 +32,7 @@ jobs:
             VUE_APP_RPC_PASSWORD=${{ secrets.VUE_APP_RPC_PASSWORD }}
             VUE_APP_LATITUDE=${{ secrets.VUE_APP_LATITUDE }}
             VUE_APP_LONGITUDE=${{ secrets.VUE_APP_LONGITUDE }}" >> .env
+          cat .env
       - name: Build the program
         run: npm run build
       - name: Commit to built-main branch
