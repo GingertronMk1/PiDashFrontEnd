@@ -23,7 +23,7 @@ jobs:
         if: steps.cache-node-modules.outputs.cache != 'true'
         run: npm install
       - name: Make env file
-        env:
+        with:
             VUE_APP_PI_URL: ${{ secrets.VUE_APP_PI_URL }}
             VUE_APP_OPENWEATHERMAP_API_KEY: ${{ secrets.VUE_APP_OPENWEATHERMAP_API_KEY }}
             VUE_APP_RPC_USERNAME: ${{ secrets.VUE_APP_RPC_USERNAME }}
