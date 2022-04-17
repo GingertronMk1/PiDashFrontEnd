@@ -1,23 +1,14 @@
 <script setup>
 import { ref } from "vue";
+import Time from "@/components/Time.vue";
 import CPU from "@/components/CPU.vue";
 import Memory from "@/components/Memory.vue";
 import Disk from "@/components/Disk.vue";
 import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
 import Weather from "@/components/Weather.vue";
-
-const time = ref(new Date().toLocaleString());
-
-const updateTime = () => {
-  time.value = new Date().toLocaleString();
-};
-
-setInterval(updateTime, 1000);
 </script>
 <template>
-  <h1 v-text="time" />
-
   <div class="widgets">
     <div class="widgets__column">
       <CPU />
@@ -26,6 +17,7 @@ setInterval(updateTime, 1000);
       <Temperatures />
     </div>
     <div class="widgets__column">
+      <Time />
       <Transmission />
       <Weather />
     </div>
@@ -42,6 +34,7 @@ h1 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 1rem 0;
 
   &__column {
     flex: 1;
