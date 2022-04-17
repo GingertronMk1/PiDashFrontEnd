@@ -28,6 +28,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+          ls dist
           git add dist -f
           git commit -m "Deployment at $(date +%Y-%m-%dT%H:%M:%S%z)"
           git push origin `git subtree split --prefix dist main`:built-live --force
