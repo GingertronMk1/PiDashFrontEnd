@@ -1,0 +1,1 @@
+git pull -X theirs --no-edit && sudo cp -r ./* /var/www/html

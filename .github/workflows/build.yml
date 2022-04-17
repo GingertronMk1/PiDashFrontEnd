@@ -30,6 +30,8 @@ jobs:
             VUE_APP_LATITUDE: ${{ secrets.VUE_APP_LATITUDE }}
             VUE_APP_LONGITUDE: ${{ secrets.VUE_APP_LONGITUDE }}
         run: npm run build
+      - name: Add deploy script to dist folder
+        run: cp ./deploy.sh ./dist/
       - name: Commit to built-main branch
         run: |
           git config user.name github-actions
