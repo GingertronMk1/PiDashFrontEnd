@@ -5,20 +5,41 @@ import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 const data = ref([]);
 
 function updateData() {
-  axios.get("/transmission").then(
-    ({
-      data: {
-        arguments: { torrents },
+  axios
+    .get("/transmission", {
+      params: {
+        arguments: {
+          fields: [
+            "addedDate",
+            "id",
+            "name",
+            "eta",
+            "leftUntilDone",
+            "percentDone",
+            "rateDownload",
+            "isFinished",
+            "magnetLink",
+          ],
+        },
       },
-    }) => {
-      data.value = (torrents ?? []).map((torrent) => ({
-        ...torrent,
-        downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(
-          2
-        )}MB/s`,
-      }));
-    }
-  );
+    })
+    .then(
+      ({
+        data: {
+          arguments: { torrents },
+        },
+      }) => {
+        data.value = (torrents ?? []).map((torrent) => ({
+          ...torrent,
+          downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(
+            2
+          )}MB/s`,
+          etaHumanReadable: Date.parse(torrent.eta)
+            ? new Date(torrent.eta).toLocaleString()
+            : "",
+        }));
+      }
+    );
 }
 
 updateData();
