@@ -42,8 +42,7 @@ const kelvinToCelcius = (kelvin) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
 
-updateData();
-setInterval(updateData, 60000);
+initialiseWidget(updateData, 60000);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="weather">

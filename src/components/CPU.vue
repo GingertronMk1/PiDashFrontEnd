@@ -11,7 +11,7 @@ function updateData() {
 }
 
 updateData();
-setInterval(updateData, 1000);
+initialiseWidget(updateData);
 
 const defineBarColour = (core) => {
   if (core > 75) {

@@ -9,7 +9,7 @@ function updateData() {
 }
 
 updateData();
-setInterval(updateData, 1000);
+initialiseWidget(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data"> </WidgetTemplate>
