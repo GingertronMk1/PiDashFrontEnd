@@ -4,36 +4,12 @@ import { computed, ref } from "vue";
 
 const data = ref(null);
 
-let coords = {
-  latitude: process.env.VUE_APP_LATITUDE,
-  longitude: process.env.VUE_APP_LONGITUDE,
-};
-
 async function updateData() {
-  /*
-  console.log("Grabbing coordinates");
-  coords = await new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  )
-    .then(({ coords: { latitude, longitude } }) => {
-      console.log("Got coords from navigator");
-      return {
-        latitude,
-        longitude,
-      };
-    })
-    .catch((err) => {
-      console.log("Falling back to env values");
-      console.error(err);
-      return coords;
-    });
-  console.log(coords);
-  */
   data.value = await axios
     .get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
-        lat: coords.latitude,
-        lon: coords.longitude,
+        lat: process.env.VUE_APP_LATITUDE,
+        lon: process.env.VUE_APP_LONGITUDE,
         appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
       },
     })
