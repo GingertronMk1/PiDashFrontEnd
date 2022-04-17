@@ -1,1 +1,1 @@
-git pull -X theirs --no-edit && sudo cp -r ./* /var/www/html
+git pull -X theirs --no-edit --allow-unrelated-histories && sudo cp -r ./* /var/www/html
