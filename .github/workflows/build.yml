@@ -23,15 +23,22 @@ jobs:
         if: steps.cache-node-modules.outputs.cache != 'true'
         run: npm install
       - name: Make env file
+        env:
+            VUE_APP_PI_URL: ${{ secrets.VUE_APP_PI_URL }}
+            VUE_APP_OPENWEATHERMAP_API_KEY: ${{ secrets.VUE_APP_OPENWEATHERMAP_API_KEY }}
+            VUE_APP_RPC_USERNAME: ${{ secrets.VUE_APP_RPC_USERNAME }}
+            VUE_APP_RPC_PASSWORD: ${{ secrets.VUE_APP_RPC_PASSWORD }}
+            VUE_APP_LATITUDE: ${{ secrets.VUE_APP_LATITUDE }}
+            VUE_APP_LONGITUDE: ${{ secrets.VUE_APP_LONGITUDE }}
         run: |
           touch .env
           echo "
-            VUE_APP_PI_URL=${{ secrets.VUE_APP_PI_URL }}
-            VUE_APP_OPENWEATHERMAP_API_KEY=${{ secrets.VUE_APP_OPENWEATHERMAP_API_KEY }}
-            VUE_APP_RPC_USERNAME=${{ secrets.VUE_APP_RPC_USERNAME }}
-            VUE_APP_RPC_PASSWORD=${{ secrets.VUE_APP_RPC_PASSWORD }}
-            VUE_APP_LATITUDE=${{ secrets.VUE_APP_LATITUDE }}
-            VUE_APP_LONGITUDE=${{ secrets.VUE_APP_LONGITUDE }}" >> .env
+            VUE_APP_PI_URL=$VUE_APP_PI_URL
+            VUE_APP_OPENWEATHERMAP_API_KEY=$VUE_APP_OPENWEATHERMAP_API_KEY
+            VUE_APP_RPC_USERNAME=$VUE_APP_RPC_USERNAME
+            VUE_APP_RPC_PASSWORD=$VUE_APP_RPC_PASSWORD
+            VUE_APP_LATITUDE=$VUE_APP_LATITUDE
+            VUE_APP_LONGITUDE=$VUE_APP_LONGITUDE" >> .env
           cat .env
       - name: Build the program
         run: npm run build
