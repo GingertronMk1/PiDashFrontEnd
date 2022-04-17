@@ -10,6 +10,7 @@ let coords = {
 };
 
 async function updateData() {
+  /*
   console.log("Grabbing coordinates");
   coords = await new Promise((resolve, reject) =>
     navigator.geolocation.getCurrentPosition(resolve, reject)
@@ -27,6 +28,7 @@ async function updateData() {
       return coords;
     });
   console.log(coords);
+  */
   data.value = await axios
     .get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
