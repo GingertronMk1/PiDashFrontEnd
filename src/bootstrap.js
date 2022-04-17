@@ -1,8 +1,6 @@
 window.axios = require("axios");
 
-window.axios.defaults.baseURL = `http://${
-  process.env.VUE_APP_PI_URL ?? "localhost/dash-api"
-}`;
+window.axios.defaults.baseURL = `${PROCESS.env.VUE_APP_PI_URL}/dash-api`;
 
 window.axios.defaults.port = "5000";
 
