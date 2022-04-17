@@ -1,0 +1,33 @@
+name: Build the application and push to live branch
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: node_modules_cache
+        with:
+          path: ./node_modules
+          key: nm-PiDashFrontEnd-${{ hashFiles('./package-lock.json') }}
+      - name: NPM
+        if: steps.cache-node-modules.outputs.cache != 'true'
+        run: npm install
+      - name: Build the program
+        run: npm run build
+      - name: Commit to built-main branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add dist -f
+          git commit -m "Deployment at $(date +%Y-%m-%dT%H:%M:%S%z)"
+          git push origin `git subtree split --prefix dist master`:built-live --force
