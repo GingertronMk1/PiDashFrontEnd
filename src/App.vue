@@ -42,6 +42,7 @@ h1 {
     flex-direction: column;
     justify-content: flex-start;
     padding: 0 1rem;
+    max-width: 50%;
 
     & > * + * {
       margin-top: 1rem;
