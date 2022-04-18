@@ -37,6 +37,7 @@ function updateData() {
           etaHumanReadable: Date.parse(torrent.eta)
             ? new Date(torrent.eta).toLocaleString()
             : "",
+          torrentNameSplit: torrent.name.split(/([^A-Za-z0-9]+)/g),
         }));
       }
     );
@@ -55,7 +56,13 @@ initialiseWidget(updateData);
       </thead>
       <tbody>
         <tr v-for="(torrent, index) in data" :key="`torrent${index}`">
-          <td v-text="torrent.name" />
+          <td>
+            <span
+              v-for="(part, partIndex) in torrent.torrentNameSplit"
+              :key="`${index}${partIndex}`"
+              v-text="part"
+            />
+          </td>
           <td
             class="transmission-widget__number-cell"
             v-text="`${(torrent.percentDone * 100).toFixed(2)}%`"
@@ -79,14 +86,17 @@ initialiseWidget(updateData);
   th {
     &:nth-of-type(1) {
       width: 60%;
-      min-width: 400px;
+      min-width: 200px;
     }
 
     &:nth-of-type(2),
     &:nth-of-type(3) {
       width: 20%;
-      min-width: 100px;
     }
+  }
+  td > span {
+    display: inline-block;
+    white-space: pre;
   }
 }
 </style>
