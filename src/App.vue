@@ -10,17 +10,13 @@ import Weather from "@/components/Weather.vue";
 </script>
 <template>
   <div class="widgets">
-    <div class="widgets__column">
-      <CPU />
-      <Memory />
-      <Disk />
-      <Temperatures />
-    </div>
-    <div class="widgets__column">
-      <Time />
-      <Transmission />
-      <Weather />
-    </div>
+    <Time />
+    <CPU />
+    <Memory />
+    <Disk />
+    <Temperatures />
+    <Transmission />
+    <Weather />
   </div>
 </template>
 <style lang="scss">
@@ -32,21 +28,16 @@ h1 {
 
 .widgets {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1rem 0;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
 
-  &__column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 0 1rem;
-    max-width: 50%;
-
-    & > * + * {
-      margin-top: 1rem;
-    }
+  .widget {
+    $margin: 0.5rem;
+    max-width: calc(50% - calc($margin * 2));
+    margin: $margin;
   }
 }
 </style>

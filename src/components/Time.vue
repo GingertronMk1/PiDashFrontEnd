@@ -11,12 +11,13 @@ function updateData() {
 initialiseWidget(updateData);
 </script>
 <template>
-  <h1 class="time" v-text="data" />
+  <h1 class="time widget" v-text="data" />
 </template>
 
 <style lang="scss">
 .time {
   text-align: center;
   margin: 0;
+  border: none;
 }
 </style>
