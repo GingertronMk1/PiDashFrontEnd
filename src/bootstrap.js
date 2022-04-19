@@ -14,5 +14,13 @@ window.bytesToGigabytes = function (bytes) {
 
 window.initialiseWidget = function (callback, interval = 1000) {
   callback();
-  setInterval(callback, interval);
+  setInterval(() => {
+    if (document.hasFocus()) {
+      document.getElementsByTagName("title")[0].innerText = "Pi Dashboard";
+      callback();
+    } else {
+      document.getElementsByTagName("title")[0].innerText =
+        "Not in focus - not updating";
+    }
+  }, interval);
 };
