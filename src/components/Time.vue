@@ -17,6 +17,6 @@ initialiseWidget(updateData);
 <style lang="scss">
 .time {
   text-align: center;
-  font-size: 4rem;
+  margin: 0;
 }
 </style>
