@@ -7,6 +7,14 @@ import Disk from "@/components/Disk.vue";
 import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
 import Weather from "@/components/Weather.vue";
+
+setInterval(() => {
+  if (document.hasFocus()) {
+    document.querySelector("title").innerText = "Pi Dashboard";
+  } else {
+    document.querySelector("title").innerText = "Pi Dashboard (idle)";
+  }
+}, 1000);
 </script>
 <template>
   <div class="widgets">
@@ -27,17 +35,18 @@ h1 {
 }
 
 .widgets {
+  $widget-margin: 0.5rem;
   display: flex;
   flex-flow: column wrap;
   justify-content: flex-start;
   align-items: stretch;
   height: 100%;
   width: 100%;
+  padding: $widget-margin;
 
   .widget {
-    $margin: 0.5rem;
-    max-width: calc(50% - calc($margin * 2));
-    margin: $margin;
+    max-width: calc(50% - calc($widget-margin * 2));
+    margin: $widget-margin;
   }
 }
 </style>

@@ -8,7 +8,7 @@ function updateData() {
   data.value = new Date().toLocaleString();
 }
 
-initialiseWidget(updateData);
+initialiseWidget(updateData, 10, false);
 </script>
 <template>
   <h1 class="time widget" v-text="data" />

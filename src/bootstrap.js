@@ -12,15 +12,15 @@ window.bytesToGigabytes = function (bytes) {
   return (Number.parseFloat(bytesToMegabytes(bytes)) / 1024).toFixed(2);
 };
 
-window.initialiseWidget = function (callback, interval = 1000) {
+window.initialiseWidget = function (
+  callback,
+  interval = 1000,
+  stopOnLostFocus = true
+) {
   callback();
   setInterval(() => {
-    if (document.hasFocus()) {
-      document.getElementsByTagName("title")[0].innerText = "Pi Dashboard";
+    if (document.hasFocus() || !stopOnLostFocus) {
       callback();
-    } else {
-      document.getElementsByTagName("title")[0].innerText =
-        "Not in focus - not updating";
     }
   }, interval);
 };
