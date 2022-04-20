@@ -7,6 +7,7 @@ import Disk from "@/components/Disk.vue";
 import Temperatures from "@/components/Temperatures.vue";
 import Transmission from "@/components/Transmission.vue";
 import Weather from "@/components/Weather.vue";
+import Processes from "@/components/Processes.vue";
 
 setInterval(() => {
   if (document.hasFocus()) {
@@ -20,6 +21,7 @@ setInterval(() => {
   <div class="widgets">
     <Time />
     <CPU />
+    <Processes />
     <Memory />
     <Disk />
     <Temperatures />
