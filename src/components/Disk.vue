@@ -4,13 +4,11 @@ import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 
 const data = ref({});
 
-const bytesToGigaBytes = (bytes) => (bytes / 1024 ** 3).toFixed(2);
-
 const diskInfoToHuman = ({ used, free, total, percent }) => {
   return {
-    used: `${bytesToGigaBytes(used)}GB`,
-    free: `${bytesToGigaBytes(free)}GB`,
-    total: `${bytesToGigaBytes(total)}GB`,
+    used: `${bytesToOther(used, "G")}GB`,
+    free: `${bytesToOther(free, "G")}GB`,
+    total: `${bytesToOther(total, "G")}GB`,
     percent: `${percent}%`,
   };
 };
