@@ -6,9 +6,9 @@ const data = ref({});
 
 const diskInfoToHuman = ({ used, free, total, percent }) => {
   return {
-    used: `${bytesToOther(used, "G")}GB`,
-    free: `${bytesToOther(free, "G")}GB`,
-    total: `${bytesToOther(total, "G")}GB`,
+    used: bytesToOther(used),
+    free: bytesToOther(free),
+    total: bytesToOther(total),
     percent: `${percent}%`,
   };
 };

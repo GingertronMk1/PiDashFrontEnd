@@ -43,9 +43,9 @@ function updateData() {
           .filter(({ isFinished }) => !isFinished)
           .map((torrent) => ({
             ...torrent,
-            downloadRateMBPS: `${(torrent.rateDownload / 1024 / 1024).toFixed(
-              2
-            )}MB/s`,
+            downloadRateHumanReadable: `${bytesToOther(
+              torrent.rateDownload
+            )}/s`,
             etaHumanReadable: dateToHumanReadable(torrent.eta) ?? "Unknown",
             torrentNameSplit: torrent.name.split(/([^A-Za-z0-9]+)/g),
           }))
@@ -82,7 +82,7 @@ initialiseWidget(updateData);
           />
           <td
             class="transmission-widget__number-cell"
-            v-text="torrent.downloadRateMBPS"
+            v-text="torrent.downloadRateHumanReadable"
           />
         </tr>
       </tbody>
