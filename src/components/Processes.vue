@@ -20,13 +20,13 @@ function updateData() {
 initialiseWidget(updateData);
 </script>
 <template>
-  <WidgetTemplate v-if="data">
+  <WidgetTemplate v-if="data" class="processes">
     <table>
       <thead>
-        <th>PID</th>
-        <th>Name</th>
-        <th>User</th>
-        <th>CPU %</th>
+        <th class="processes__column processes__column--pid">PID</th>
+        <th class="processes__column processes__column--name">Name</th>
+        <th class="processes__column processes__column--user">User</th>
+        <th class="processes__column processes__column--cpu">CPU %</th>
       </thead>
       <tbody>
         <tr
@@ -43,4 +43,24 @@ initialiseWidget(updateData);
   </WidgetTemplate>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.processes {
+  &__column {
+    &--pid {
+      width: 12.5%;
+    }
+
+    &--name {
+      width: 40%;
+    }
+
+    &--user {
+      width: 22.5%;
+    }
+
+    &--cpu {
+      width: 12.5%;
+    }
+  }
+}
+</style>
