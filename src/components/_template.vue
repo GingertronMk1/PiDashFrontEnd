@@ -4,11 +4,16 @@ import { ref } from "vue";
 
 const data = ref(null);
 
-function updateData() {
-  return;
+async function updateData() {
+  data.value = await axios
+    .get("/<ROUTE>")
+    .then(({ data }) => data)
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
 }
 
-updateData();
 initialiseWidget(updateData);
 </script>
 <template>
