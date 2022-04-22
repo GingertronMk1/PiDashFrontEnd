@@ -21,7 +21,6 @@ function updateData() {
   });
 }
 
-updateData();
 initialiseWidget(updateData);
 </script>
 <template>

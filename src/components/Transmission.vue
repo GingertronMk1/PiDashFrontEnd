@@ -16,21 +16,19 @@ function updateData() {
   axios
     .get("/transmission", {
       params: {
-        arguments: {
-          fields: [
-            "addedDate",
-            "id",
-            "name",
-            "eta",
-            "etaIdle",
-            "leftUntilDone",
-            "percentDone",
-            "rateDownload",
-            "isFinished",
-            "magnetLink",
-            "isFinished",
-          ],
-        },
+        fields: [
+          "addedDate",
+          "id",
+          "name",
+          "eta",
+          "etaIdle",
+          "leftUntilDone",
+          "percentDone",
+          "rateDownload",
+          "isFinished",
+          "magnetLink",
+          "isFinished",
+        ],
       },
     })
     .then(
@@ -47,7 +45,7 @@ function updateData() {
               torrent.rateDownload
             )}/s`,
             etaHumanReadable: dateToHumanReadable(torrent.eta) ?? "Unknown",
-            torrentNameSplit: torrent.name.split(/([^A-Za-z0-9]+)/g),
+            torrentNameSplit: torrent.name.split(/([^A-Za-z0-9\[\]\(\)]+)/g),
           }))
           .sort(({ name: a }, { name: b }) =>
             a.toLowerCase().localeCompare(b.toLowerCase())

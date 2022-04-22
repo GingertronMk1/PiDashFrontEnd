@@ -1,8 +1,13 @@
 window.axios = require("axios");
 
-window.axios.defaults.baseURL = `${process.env.VUE_APP_PI_URL ?? ""}/dash-api`;
-
+window.axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
 window.axios.defaults.port = "5000";
+window.axios.defaults.paramsSerializer = (params) => {
+  console.table(params);
+  return Object.entries(params)
+    .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+    .join("&");
+};
 
 function getBaseLog(base, value) {
   return Math.log(value) / Math.log(base);

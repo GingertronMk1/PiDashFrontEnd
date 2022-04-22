@@ -6,17 +6,19 @@ const data = ref([]);
 
 function updateData() {
   axios.get("/temperatures").then(({ data: newData }) => {
-    data.value = Object.entries(newData).map(([key, value]) => ({
+    console.table(newData);
+    const ret = Object.entries(newData).map(([key, { current }]) => ({
       title: key
         .split("_")
         .map((word) => word[0].toUpperCase() + word.slice(1))
         .join(" "),
-      temps: value.map(({ current }) => `${current.toFixed(2)}°C`).join(", "),
+      temps: `${Number.parseFloat(current).toFixed(2)}°C`,
     }));
+    console.table(ret);
+    data.value = ret;
   });
 }
 
-updateData();
 initialiseWidget(updateData);
 </script>
 <template>

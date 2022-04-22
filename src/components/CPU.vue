@@ -10,7 +10,6 @@ function updateData() {
   });
 }
 
-updateData();
 initialiseWidget(updateData);
 
 const defineBarColour = (core) => {
