@@ -29,6 +29,7 @@ jobs:
             VUE_APP_RPC_PASSWORD: ${{ secrets.VUE_APP_RPC_PASSWORD }}
             VUE_APP_LATITUDE: ${{ secrets.VUE_APP_LATITUDE }}
             VUE_APP_LONGITUDE: ${{ secrets.VUE_APP_LONGITUDE }}
+            VUE_APP_PI_URL: ${{ secrets.VUE_APP_PI_URL }}
         run: npm run build
       - name: Add deploy script to dist folder
         run: cp ./deploy.sh ./dist/
