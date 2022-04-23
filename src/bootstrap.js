@@ -1,12 +1,14 @@
 window.axios = require("axios");
 
-window.axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
-window.axios.defaults.port = "5000";
-window.axios.defaults.paramsSerializer = (params) => {
-  console.table(params);
-  return Object.entries(params)
-    .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
-    .join("&");
+window.axios.defaults = {
+  ...window.axios.defaults,
+  baseURL: process.env.VUE_APP_PI_URL ?? "",
+  paramsSerializer: (params) => {
+    console.table(params);
+    return Object.entries(params)
+      .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+      .join("&");
+  },
 };
 
 function getBaseLog(base, value) {
