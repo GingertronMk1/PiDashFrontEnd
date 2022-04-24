@@ -21,7 +21,7 @@ window.bytesToOther = function (bytes) {
   const log = getBaseLog(base, amount);
   const logFloored = Math.floor(log);
 
-  return `${(amount / base ** logFloored).toFixed(2)}${prefixes[logFloored]}B`;
+  return (amount / base ** logFloored).toFixed(2) + prefixes[logFloored] + "B";
 };
 
 window.bytesToMegabytes = function (bytes) {
