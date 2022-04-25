@@ -12,6 +12,7 @@ async function updateData() {
         lon: process.env.VUE_APP_LONGITUDE,
         appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
       },
+      paramsSerializer: null,
     })
     .then(({ data }) => data);
 }
