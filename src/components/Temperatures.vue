@@ -6,7 +6,6 @@ const data = ref([]);
 
 function updateData() {
   axios.get("/temperatures").then(({ data: newData }) => {
-    console.table(newData);
     const ret = Object.entries(newData).map(([key, { current }]) => ({
       title: key
         .split("_")
@@ -14,7 +13,6 @@ function updateData() {
         .join(" "),
       temps: `${Number.parseFloat(current).toFixed(2)}°C`,
     }));
-    console.table(ret);
     data.value = ret;
   });
 }

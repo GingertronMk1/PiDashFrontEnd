@@ -22,9 +22,9 @@ setInterval(() => {
     <Time />
     <CPU />
     <Processes />
+    <Temperatures />
     <Memory />
     <Disk />
-    <Temperatures />
     <Transmission />
     <Weather />
   </div>
