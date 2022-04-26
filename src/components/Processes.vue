@@ -14,12 +14,33 @@ function updateData() {
     .then(
       ({ data: newData }) =>
         (data.value = newData
+          .reduce((acc, item) => {
+            if (!acc.map(({ name }) => name).includes(item.name)) {
+              acc.push(item);
+            } else {
+              const index = acc.map(({ name }) => name).indexOf(item.name);
+              const currentItem = acc[index];
+              acc[index] = {
+                ...currentItem,
+                cpu_percent: currentItem.cpu_percent + item.cpu_percent,
+                memory_percent:
+                  currentItem.memory_percent + item.memory_percent,
+              };
+            }
+            return acc;
+          }, [])
+          .sort((a, b) => {
+            const cpu_diff = b.cpu_percent - a.cpu_percent;
+            if (cpu_diff !== 0) {
+              return cpu_diff;
+            }
+            return b.memory_percent - a.memory_percent;
+          })
           .map((item) => ({
             ...item,
             cpu_percent_toFixed: item.cpu_percent.toFixed(0) + "%",
             memory_percent_toFixed: item.memory_percent.toFixed(0) + "%",
-          }))
-          .sort((a, b) => b.cpu_percent - a.cpu_percent))
+          })))
     );
 }
 
