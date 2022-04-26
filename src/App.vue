@@ -49,6 +49,8 @@ h1 {
   .widget {
     max-width: calc(50% - calc($widget-margin * 2));
     margin: $widget-margin;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
