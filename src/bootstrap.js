@@ -2,9 +2,13 @@ window.axios = require("axios");
 
 window.axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
 window.axios.defaults.paramsSerializer = (params) => {
-  console.table(params);
   return Object.entries(params)
-    .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+    .map(([key, value]) => {
+      if (Array.isArray(value)) {
+        return value.map((v) => `${key}=${v}`).join("&");
+      }
+      return `${key}=${value}`;
+    })
     .join("&");
 };
 
