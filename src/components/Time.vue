@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { ref } from "vue";
 
