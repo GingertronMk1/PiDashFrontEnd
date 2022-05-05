@@ -1,27 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { computed, ref } from "vue";
 
 const data = ref(null);
 
-async function updateData() {
-  data.value = await axios
-    .get("https://api.openweathermap.org/data/2.5/weather", {
-      params: {
+const params: object = {
+  params: {
+
         lat: process.env.VUE_APP_LATITUDE,
         lon: process.env.VUE_APP_LONGITUDE,
         appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-      },
-      paramsSerializer: null,
-    })
-    .then(({ data }) => data);
+  },
+  paramsSerializer: null,
 }
 
-const kelvinToCelcius = (kelvin) => {
+async function updateData() {
+  data.value = await (<any>window).axios
+    .get("https://api.openweathermap.org/data/2.5/weather", params)
+    .then((response: Axios): object => response.data);
+}
+
+const kelvinToCelcius = (kelvin: number) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
 
-initialiseWidget(updateData, 60000);
+(window as any).initialiseWidget(updateData, 60000);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="weather">
