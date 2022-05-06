@@ -19,5 +19,3 @@ initialiseWidget(updateData);
 <template>
   <WidgetTemplate v-if="data"> </WidgetTemplate>
 </template>
-
-<style lang="scss"></style>

@@ -21,53 +21,12 @@ setInterval(() => {
 }, 1000);
 </script>
 <template>
-  <div class="widgets">
-    <Time />
-    <CPU />
-    <Processes />
-    <Temperatures />
-    <Memory />
-    <Disk />
-    <Transmission />
-    <Weather />
-  </div>
+  <Time />
+  <CPU />
+  <Processes />
+  <Temperatures />
+  <Memory />
+  <Disk />
+  <Transmission />
+  <Weather />
 </template>
-<style lang="scss">
-@import "@/assets/style.scss";
-
-h1 {
-  text-align: center;
-}
-
-@mixin smallerScreen() {
-  @media (max-width: 1023px) {
-    @content;
-  }
-}
-
-.widgets {
-  $widget-margin: 0.5rem;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  height: 100%;
-  width: 100%;
-  padding: $widget-margin;
-  @include smallerScreen {
-    flex-wrap: nowrap;
-  }
-
-  .widget {
-    max-width: calc(50% - calc($widget-margin * 2));
-    margin: $widget-margin;
-    display: flex;
-    flex-direction: column;
-
-    @include smallerScreen {
-      max-width: calc(100% - calc($widget-margin * 2));
-      min-width: calc(100% - calc($widget-margin * 2));
-    }
-  }
-}
-</style>

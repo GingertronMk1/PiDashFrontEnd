@@ -22,19 +22,17 @@ type OpenWeatherResponse = {
 
 const data: Ref<OpenWeatherResponse | null> = ref(null);
 
-const params: object = {
-  params: {
-    lat: process.env.VUE_APP_LATITUDE,
-    lon: process.env.VUE_APP_LONGITUDE,
-    appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-  },
-  paramsSerializer: null,
-};
-
 const $axios = inject(AxiosKey);
 async function updateData() {
   $axios
-    ?.get("https://api.openweathermap.org/data/2.5/weather", params)
+    ?.get("https://api.openweathermap.org/data/2.5/weather", {
+      params: {
+        lat: process.env.VUE_APP_LATITUDE,
+        lon: process.env.VUE_APP_LONGITUDE,
+        appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+      },
+      paramsSerializer: null,
+    })
     ?.then(
       (response: { data: OpenWeatherResponse }): object =>
         (data.value = response.data)
@@ -91,48 +89,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </div>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.weather {
-  .widget__header {
-    img {
-      max-height: 3.5rem;
-    }
-  }
-
-  .widget__body {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  &__column {
-    display: flex;
-    flex-direction: column;
-
-    &--temp-display {
-      font-weight: bold;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-
-      font-size: 1.5rem;
-
-      strong {
-        font-size: 3rem;
-      }
-    }
-
-    &--other-info {
-      justify-content: flex-start;
-      align-items: stretch;
-      padding: 0.5rem;
-    }
-  }
-
-  &__row {
-    & + & {
-      margin-top: 1rem;
-    }
-  }
-}
-</style>

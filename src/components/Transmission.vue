@@ -108,30 +108,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </table>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.transmission-widget {
-  &__number-cell {
-    text-align: center;
-  }
-
-  th {
-    $firstN: 58%;
-    $otherCols: 3;
-    &:nth-of-type(1) {
-      width: $firstN;
-      min-width: 200px;
-    }
-
-    @for $n from 2 through 10 {
-      &:nth-of-type(#{$n}) {
-        width: calc($firstN / $otherCols);
-      }
-    }
-  }
-  td > span {
-    display: inline-block;
-    white-space: pre;
-  }
-}
-</style>

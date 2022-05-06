@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { InitialiseWidgetKey, AxiosKey, BytesToOtherKey } from "./symbols";
+import "./assets/style.css";
 
 const app = createApp(App);
 

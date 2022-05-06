@@ -7,30 +7,3 @@
     <div class="widget__body"><slot /></div>
   </div>
 </template>
-
-<style lang="scss">
-.widget {
-  border: 2px solid #606060;
-  border-radius: 0.5rem;
-  &__header,
-  &__body {
-    padding: 1rem;
-  }
-
-  &__header {
-    margin: 0;
-    padding-bottom: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-  }
-}
-</style>

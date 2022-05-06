@@ -83,22 +83,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </table>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.processes {
-  &__column {
-    &--name {
-      width: 45%;
-    }
-
-    &--user {
-      width: 25%;
-    }
-
-    &--cpu,
-    &--memory {
-      width: 15%;
-    }
-  }
-}
-</style>

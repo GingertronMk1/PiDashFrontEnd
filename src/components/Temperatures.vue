@@ -50,5 +50,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </span>
   </WidgetTemplate>
 </template>
-
-<style lang="scss"></style>
