@@ -31,15 +31,15 @@ const defineBarColour = (core: number) => {
 <template>
   <WidgetTemplate v-if="data" class="cpu-widget">
     <template #header>CPU</template>
-    <div class="cpu-widget__graph">
+    <div class="space-y-1">
       <div
         v-for="(core, index) in data"
         :key="`core${index}`"
-        class="cpu-widget__line"
+        class="flex flex-row"
       >
-        <span class="cpu-widget__cpu-number" v-text="index" />
+        <span class="min-w-[1rem] text-center" v-text="index" />
         <span
-          class="cpu-widget__bar"
+          class="mr-auto"
           :style="{
             width: `${core}%`,
             backgroundColor: defineBarColour(core),

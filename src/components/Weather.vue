@@ -47,12 +47,13 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="weather">
-    <template #header
-      >Weather
+    <template #header>
+      <span>Weather</span>
       <span>
         <img
           v-for="(item, index) in data.weather"
           :key="index"
+          class="w-12 h-12"
           :src="`http://openweathermap.org/img/wn/${item.icon}@2x.png`"
         />
       </span>

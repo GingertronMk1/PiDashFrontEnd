@@ -62,12 +62,12 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="processes">
-    <table>
+    <table class="w-full">
       <thead>
-        <th class="processes__column processes__column--name">Name</th>
-        <th class="processes__column processes__column--user">User</th>
-        <th class="processes__column processes__column--cpu">CPU</th>
-        <th class="processes__column processes__column--memory">RAM</th>
+        <th class="w-4/12">Name</th>
+        <th class="w-4/12">User</th>
+        <th class="w-2/12">CPU</th>
+        <th class="w-2/12">RAM</th>
       </thead>
       <tbody>
         <tr

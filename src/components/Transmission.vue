@@ -33,6 +33,7 @@ function dateToHumanReadable(date: number) {
 }
 
 const $axios = inject(AxiosKey);
+const $bytesToOther = inject(BytesToOtherKey);
 function updateData() {
   $axios
     ?.get("/transmission", {
@@ -61,7 +62,7 @@ function updateData() {
           .filter(({ isFinished }: { isFinished: boolean }) => !isFinished)
           .map((torrent: TorrentResponse) => ({
             ...torrent,
-            downloadRateHumanReadable: `${inject(BytesToOtherKey)?.(
+            downloadRateHumanReadable: `${$bytesToOther?.(
               torrent.rateDownload
             )}/s`,
             etaHumanReadable: dateToHumanReadable(torrent.eta) ?? "Unknown",
@@ -80,11 +81,11 @@ inject(InitialiseWidgetKey)?.(updateData);
 <template>
   <WidgetTemplate v-if="data.length" class="transmission-widget">
     <template #header>Transmission</template>
-    <table>
+    <table class="w-full">
       <thead>
-        <th>Name</th>
-        <th>% done</th>
-        <th>Download Speed</th>
+        <th class="w-3/4">Name</th>
+        <th class="w-1/8">% done</th>
+        <th class="w-1/8">Download Speed</th>
       </thead>
       <tbody>
         <tr v-for="(torrent, index) in data" :key="`torrent${index}`">

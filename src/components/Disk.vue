@@ -56,13 +56,13 @@ inject(InitialiseWidgetKey)?.(updateData);
 <template>
   <WidgetTemplate v-if="data">
     <template #header>Disk</template>
-    <table>
+    <table class="w-full">
       <thead>
-        <th>Mount Point</th>
-        <th>Used</th>
-        <th>Free</th>
-        <th>Total</th>
-        <th>% Used</th>
+        <th class="w-1/5">Mount Point</th>
+        <th class="w-1/5">Used</th>
+        <th class="w-1/5">Free</th>
+        <th class="w-1/5">Total</th>
+        <th class="w-1/5">% Used</th>
       </thead>
       <tbody>
         <tr v-for="(stats, mountpoint) in data" :key="mountpoint">

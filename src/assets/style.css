@@ -4,6 +4,6 @@
 
 @layer components {
   .widget {
-    @apply flex flex-col border border-gray-200 rounded-lg p-4 w-5/12;
+    @apply flex flex-col border border-gray-200 rounded-lg p-4 w-[49%] my-[0.5%];
   }
 }
