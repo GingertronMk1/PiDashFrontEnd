@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { InitialiseWidgetKey } from "@/symbols";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { ref } from "vue";
+import { inject, Ref, ref } from "vue";
 
-const data = ref(null);
+const data: Ref<string> = ref(new Date().toLocaleString());
 
 function updateData() {
   data.value = new Date().toLocaleString();
 }
 
-initialiseWidget(updateData, 10, false);
+inject(InitialiseWidgetKey)?.(updateData, 10, false);
 </script>
 <template>
   <h1 class="time widget" v-text="data" />
