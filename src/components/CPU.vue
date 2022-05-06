@@ -45,7 +45,7 @@ const defineBarColour = (core: number) => {
             backgroundColor: defineBarColour(core),
           }"
         />
-        <span class="cpu-widget__cpu-percent" v-text="`${core.toFixed(0)}%`" />
+        <span class="min-w-[2rem] ml-1" v-text="`${core.toFixed(0)}%`" />
       </div>
     </div>
   </WidgetTemplate>
