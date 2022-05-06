@@ -46,7 +46,11 @@ const kelvinToCelcius = (kelvin: number) => {
 inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
-  <WidgetTemplate v-if="data" class="weather">
+  <WidgetTemplate
+    v-if="data"
+    class="weather"
+    body-classes="flex flex-row justify-between items-center"
+  >
     <template #header>
       <span>Weather</span>
       <span>
@@ -58,13 +62,13 @@ inject(InitialiseWidgetKey)?.(updateData);
         />
       </span>
     </template>
-    <div class="weather__column weather__column--temp-display">
+    <div class="flex flex-col text-center">
       <span>Current:</span>
-      <strong v-text="kelvinToCelcius(data.main.temp)" />
+      <strong class="text-4xl" v-text="kelvinToCelcius(data.main.temp)" />
     </div>
-    <div class="weather__column weather__column--temp-display">
+    <div class="flex flex-col text-center">
       <span>Feels like:</span>
-      <strong v-text="kelvinToCelcius(data.main.feels_like)" />
+      <strong class="text-4xl" v-text="kelvinToCelcius(data.main.feels_like)" />
     </div>
     <div class="weather__other-info">
       <div
