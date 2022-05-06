@@ -5,12 +5,12 @@ import { InitialiseWidgetKey, AxiosKey } from "@/symbols";
 
 const data: Ref<number[]> = ref([]);
 
+const $axios = inject(AxiosKey);
+
 function updateData() {
-  inject(AxiosKey)
-    ?.get("/cpu")
-    ?.then(({ data: newData }) => {
-      data.value = newData;
-    });
+  $axios?.get("/cpu")?.then(({ data: newData }) => {
+    data.value = newData;
+  });
 }
 
 inject(InitialiseWidgetKey)?.(updateData);

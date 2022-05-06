@@ -19,8 +19,9 @@ type TempsProcessed = {
 
 const data: Ref<TempsProcessed> = ref([]);
 
+const $axios = inject(AxiosKey);
 function updateData() {
-  inject(AxiosKey)
+  $axios
     ?.get("/temperatures")
     ?.then(({ data: newData }: { data: TempsResponse }) => {
       const ret = Object.keys(newData).map((key: string) => {

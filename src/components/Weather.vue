@@ -2,6 +2,7 @@
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { inject, ref, Ref } from "vue";
 import { InitialiseWidgetKey, AxiosKey } from "@/symbols";
+import axios from "axios";
 
 type OpenWeatherResponse = {
   weather: { icon: string }[];
@@ -30,8 +31,9 @@ const params: object = {
   paramsSerializer: null,
 };
 
+const $axios = inject(AxiosKey);
 async function updateData() {
-  inject(AxiosKey)
+  $axios
     ?.get("https://api.openweathermap.org/data/2.5/weather", params)
     ?.then(
       (response: { data: OpenWeatherResponse }): object =>
