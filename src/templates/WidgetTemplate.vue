@@ -1,4 +1,19 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from "vue";
+const props = defineProps({
+  bodyClasses: {
+    type: [String, Array],
+    default: "flex flex-col",
+  },
+});
+const computedBodyClasses = computed(() => {
+  const { bodyClasses } = props;
+  if (Array.isArray(bodyClasses)) {
+    return bodyClasses.join(" ");
+  }
+  return bodyClasses.trim();
+});
+</script>
 <template>
   <div class="widget">
     <h3
@@ -7,6 +22,6 @@
     >
       <slot name="header" />
     </h3>
-    <div class="widget__body"><slot /></div>
+    <div :class="computedBodyClasses"><slot /></div>
   </div>
 </template>
