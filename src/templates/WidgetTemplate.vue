@@ -1,4 +1,4 @@
-<script setup></script>
+<script setup lang="ts"></script>
 <template>
   <div class="widget">
     <h3 v-if="$slots.header" class="widget__header">

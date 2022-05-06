@@ -1,18 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { ref } from "vue";
+import { inject, ref, Ref } from "vue";
+import { InitialiseWidgetKey, AxiosKey } from "@/symbols";
 
-const data = ref([]);
+const data: Ref<number[]> = ref([]);
 
 function updateData() {
-  axios.get("/cpu").then(({ data: newData }) => {
-    data.value = newData;
-  });
+  inject(AxiosKey)
+    ?.get("/cpu")
+    ?.then(({ data: newData }) => {
+      data.value = newData;
+    });
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 
-const defineBarColour = (core) => {
+const defineBarColour = (core: number) => {
   if (core > 75) {
     return "red";
   }

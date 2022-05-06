@@ -1,10 +1,30 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { inject, Ref, ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
+import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/symbols";
 
-const data = ref([]);
+type TorrentResponse = {
+  addedDate: number;
+  id: number;
+  name: string;
+  eta: number;
+  etaIdle: number;
+  leftUntilDone: number;
+  percentDone: number;
+  rateDownload: number;
+  isFinished: string;
+  magnetLink: string;
+};
 
-function dateToHumanReadable(date) {
+type TorrentProcessed = TorrentResponse & {
+  downloadRateHumanReadable: string;
+  etaHumanReadable: string;
+  torrentNameSplit: string[];
+};
+
+const data: Ref<TorrentProcessed[]> = ref([]);
+
+function dateToHumanReadable(date: number) {
   const dateObj = new Date(date * 1000);
   if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
     return dateObj.toLocaleString();
@@ -13,8 +33,8 @@ function dateToHumanReadable(date) {
 }
 
 function updateData() {
-  axios
-    .get("/transmission", {
+  inject(AxiosKey)
+    ?.get("/transmission", {
       params: {
         fields: [
           "addedDate",
@@ -27,7 +47,6 @@ function updateData() {
           "rateDownload",
           "isFinished",
           "magnetLink",
-          "isFinished",
         ],
       },
     })
@@ -38,23 +57,24 @@ function updateData() {
         },
       }) => {
         data.value = (torrents ?? [])
-          .filter(({ isFinished }) => !isFinished)
-          .map((torrent) => ({
+          .filter(({ isFinished }: { isFinished: boolean }) => !isFinished)
+          .map((torrent: TorrentResponse) => ({
             ...torrent,
-            downloadRateHumanReadable: `${bytesToOther(
+            downloadRateHumanReadable: `${inject(BytesToOtherKey)?.(
               torrent.rateDownload
             )}/s`,
             etaHumanReadable: dateToHumanReadable(torrent.eta) ?? "Unknown",
             torrentNameSplit: torrent.name.split(/([^A-Za-z0-9\[\]\(\)]+)/g),
           }))
-          .sort(({ name: a }, { name: b }) =>
-            a.toLowerCase().localeCompare(b.toLowerCase())
+          .sort(
+            ({ name: a }: TorrentProcessed, { name: b }: TorrentProcessed) =>
+              a.toLowerCase().localeCompare(b.toLowerCase())
           );
       }
     );
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data.length" class="transmission-widget">

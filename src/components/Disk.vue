@@ -1,27 +1,56 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { inject, ref, Ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
+import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/symbols";
 
-const data = ref({});
+type DiskInfoResponse = {
+  [mountpoint: string]: DiskInfoPart;
+};
 
-const diskInfoToHuman = ({ used, free, total, percent }) => {
+type DiskInfoPart = {
+  total: number;
+  free: number;
+  used: number;
+  percent: number;
+};
+
+type DiskInfoProcessedResponse = {
+  [mountpoint: string]: DiskInfoProcessedPart;
+};
+
+type DiskInfoProcessedPart = {
+  total: string;
+  free: string;
+  used: string;
+  percent: string;
+};
+
+const data: Ref<DiskInfoProcessedResponse> = ref({});
+
+const bytesToOther = inject(BytesToOtherKey);
+
+const diskInfoToHuman = ({ used, free, total, percent }: DiskInfoPart) => {
   return {
-    used: bytesToOther(used),
-    free: bytesToOther(free),
-    total: bytesToOther(total),
+    used: bytesToOther?.(used),
+    free: bytesToOther?.(free),
+    total: bytesToOther?.(total),
     percent: `${percent}%`,
-  };
+  } as DiskInfoProcessedPart;
 };
 
 function updateData() {
-  axios.get("/disk").then(({ data: newData }) => {
-    Object.entries(newData).forEach(([key, value]) => {
-      data.value[key] = diskInfoToHuman(value);
+  inject(AxiosKey)
+    ?.get("/disk")
+    ?.then(({ data: newData }: { data: DiskInfoResponse }) => {
+      Object.keys(newData).forEach((mountpoint: string) => {
+        if (mountpoint !== null && newData[mountpoint] !== null) {
+          data.value[mountpoint] = diskInfoToHuman(newData[mountpoint]);
+        }
+      });
     });
-  });
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data">

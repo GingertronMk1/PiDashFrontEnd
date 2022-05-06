@@ -1,23 +1,45 @@
-<script setup>
+<script setup lang="ts">
+import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { ref } from "vue";
+import { inject, Ref, ref } from "vue";
 
-const data = ref([]);
+type TempsResponse = {
+  [key: string]: TempsResponsePart;
+};
+
+type TempsResponsePart = {
+  current: string;
+};
+
+type TempsProcessed = {
+  key: string;
+  title: string;
+  temps: string;
+}[];
+
+const data: Ref<TempsProcessed> = ref([]);
 
 function updateData() {
-  axios.get("/temperatures").then(({ data: newData }) => {
-    const ret = Object.entries(newData).map(([key, { current }]) => ({
-      title: key
-        .split("_")
-        .map((word) => word[0].toUpperCase() + word.slice(1))
-        .join(" "),
-      temps: `${Number.parseFloat(current).toFixed(2)}°C`,
-    }));
-    data.value = ret;
-  });
+  inject(AxiosKey)
+    ?.get("/temperatures")
+    ?.then(({ data: newData }: { data: TempsResponse }) => {
+      const ret = Object.keys(newData).map((key: string) => {
+        const { current }: TempsResponsePart = newData[key];
+        console.log(current);
+        return {
+          key,
+          title: key
+            .split("_")
+            .map((word) => word[0].toUpperCase() + word.slice(1))
+            .join(" "),
+          temps: `${Number.parseFloat(current).toFixed(2)}°C`,
+        };
+      }) as TempsProcessed;
+      data.value = ret;
+    });
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data">
