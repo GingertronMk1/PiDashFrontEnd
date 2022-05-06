@@ -15,16 +15,15 @@ type MemoryResponse = {
 
 const data: Ref<MemoryData | null> = ref(null);
 
+const $axios = inject(AxiosKey);
 function updateData() {
-  inject(AxiosKey)
-    ?.get("/memory")
-    ?.then((response: { data: MemoryResponse }) => {
-      const { available, total } = response.data;
-      data.value = {
-        available: (available / 1024 / 1024).toFixed(2),
-        total: (total / 1024 / 1024).toFixed(2),
-      } as MemoryData;
-    });
+  $axios?.get("/memory")?.then((response: { data: MemoryResponse }) => {
+    const { available, total } = response.data;
+    data.value = {
+      available: (available / 1024 / 1024).toFixed(2),
+      total: (total / 1024 / 1024).toFixed(2),
+    } as MemoryData;
+  });
 }
 
 inject(InitialiseWidgetKey)?.(updateData);

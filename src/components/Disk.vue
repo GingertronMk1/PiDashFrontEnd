@@ -38,8 +38,9 @@ const diskInfoToHuman = ({ used, free, total, percent }: DiskInfoPart) => {
   } as DiskInfoProcessedPart;
 };
 
+const $axios = inject(AxiosKey);
 function updateData() {
-  inject(AxiosKey)
+  $axios
     ?.get("/disk")
     ?.then(({ data: newData }: { data: DiskInfoResponse }) => {
       Object.keys(newData).forEach((mountpoint: string) => {

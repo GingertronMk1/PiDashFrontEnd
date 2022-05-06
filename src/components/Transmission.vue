@@ -32,8 +32,9 @@ function dateToHumanReadable(date: number) {
   return null;
 }
 
+const $axios = inject(AxiosKey);
 function updateData() {
-  inject(AxiosKey)
+  $axios
     ?.get("/transmission", {
       params: {
         fields: [

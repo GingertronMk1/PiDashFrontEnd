@@ -17,8 +17,9 @@ type ProcessesProcessed = ProcessesResponse & {
 
 const data: Ref<ProcessesProcessed[] | null> = ref(null);
 
+const $axios = inject(AxiosKey);
 function updateData() {
-  inject(AxiosKey)
+  $axios
     ?.get("/processes", {
       params: {
         arguments: ["name", "username", "cpu_percent", "memory_percent"],
