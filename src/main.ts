@@ -1,8 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import { InitialiseWidgetKey, AxiosKey, BytesToOtherKey } from "./symbols";
-
-const app = createApp(App);
+import "./assets/style.css";
 
 const $axios = require("axios");
 $axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
@@ -17,9 +16,7 @@ $axios.defaults.paramsSerializer = (params: object) => {
     .join("&");
 };
 
-app.provide(AxiosKey, $axios);
-
-app.provide(BytesToOtherKey, function (bytes: number) {
+function bytesToOther(bytes: number): string {
   if (bytes === 0) return "0B";
   const prefixes = ["", "K", "M", "G", "T", "P"];
   const base = 1024;
@@ -27,22 +24,23 @@ app.provide(BytesToOtherKey, function (bytes: number) {
   const logFloored = Math.floor(log);
 
   return (bytes / base ** logFloored).toFixed(2) + prefixes[logFloored] + "B";
-});
+}
 
-app.provide(
-  InitialiseWidgetKey,
-  function (
-    callback: Function,
-    interval: number = 1000,
-    stopOnLostFocus: boolean = true
-  ) {
-    callback();
-    setInterval(() => {
-      if (document.hasFocus() || !stopOnLostFocus) {
-        callback();
-      }
-    }, interval);
-  }
-);
+function initialiseWidget(
+  callback: Function,
+  interval: number = 1000,
+  stopOnLostFocus: boolean = true
+) {
+  callback();
+  setInterval(() => {
+    if (document.hasFocus() || !stopOnLostFocus) {
+      callback();
+    }
+  }, interval);
+}
 
-app.mount("#app");
+createApp(App)
+  .provide(InitialiseWidgetKey, initialiseWidget)
+  .provide(BytesToOtherKey, bytesToOther)
+  .provide(AxiosKey, $axios)
+  .mount("#app");

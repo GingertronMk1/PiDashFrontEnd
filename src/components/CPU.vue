@@ -31,62 +31,22 @@ const defineBarColour = (core: number) => {
 <template>
   <WidgetTemplate v-if="data" class="cpu-widget">
     <template #header>CPU</template>
-    <div class="cpu-widget__graph">
+    <div class="space-y-1">
       <div
         v-for="(core, index) in data"
         :key="`core${index}`"
-        class="cpu-widget__line"
+        class="flex flex-row"
       >
-        <span class="cpu-widget__cpu-number" v-text="index" />
+        <span class="min-w-[1rem] text-center" v-text="index" />
         <span
-          class="cpu-widget__bar"
+          class="mr-auto"
           :style="{
             width: `${core}%`,
             backgroundColor: defineBarColour(core),
           }"
         />
-        <span class="cpu-widget__cpu-percent" v-text="`${core.toFixed(0)}%`" />
+        <span class="min-w-[2rem] ml-1" v-text="`${core.toFixed(0)}%`" />
       </div>
     </div>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.cpu-widget {
-  &__graph {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-  }
-
-  &__line {
-    height: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: stretch;
-
-    & + & {
-      margin-top: 1rem;
-    }
-  }
-
-  &__cpu-number {
-    width: 2rem;
-    min-width: 2rem;
-    max-width: 2rem;
-  }
-
-  &__cpu-percent {
-    width: 4rem;
-    min-width: 4rem;
-    max-width: 4rem;
-    text-align: right;
-  }
-
-  &__bar {
-    margin-right: auto;
-  }
-}
-</style>

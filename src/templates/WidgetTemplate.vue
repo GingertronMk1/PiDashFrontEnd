@@ -1,36 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from "vue";
+const props = defineProps({
+  bodyClasses: {
+    type: [String, Array],
+    default: "flex flex-col",
+  },
+});
+const computedBodyClasses = computed(() => {
+  const { bodyClasses } = props;
+  if (Array.isArray(bodyClasses)) {
+    return bodyClasses.join(" ");
+  }
+  return bodyClasses.trim();
+});
+</script>
 <template>
   <div class="widget">
-    <h3 v-if="$slots.header" class="widget__header">
+    <h3
+      v-if="$slots.header"
+      class="flex flex-row justify-between items-center text-3xl"
+    >
       <slot name="header" />
     </h3>
-    <div class="widget__body"><slot /></div>
+    <div :class="computedBodyClasses"><slot /></div>
   </div>
 </template>
-
-<style lang="scss">
-.widget {
-  border: 2px solid #606060;
-  border-radius: 0.5rem;
-  &__header,
-  &__body {
-    padding: 1rem;
-  }
-
-  &__header {
-    margin: 0;
-    padding-bottom: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-  }
-}
-</style>

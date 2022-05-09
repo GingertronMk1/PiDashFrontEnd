@@ -3,12 +3,14 @@ import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { inject, Ref, ref } from "vue";
 
-type ProcessesResponse = {
-  name: string;
-  username: string;
-  cpu_percent: number;
-  memory_percent: number;
-};
+class ProcessesResponse {
+  constructor(
+    public name: string = "",
+    public username: string = "",
+    public cpu_percent: number = -1,
+    public memory_percent: number = -1
+  ) {}
+}
 
 type ProcessesProcessed = ProcessesResponse & {
   cpu_percent_toFixed: string;
@@ -22,7 +24,7 @@ function updateData() {
   $axios
     ?.get("/processes", {
       params: {
-        arguments: ["name", "username", "cpu_percent", "memory_percent"],
+        arguments: Object.keys(new ProcessesResponse()),
       },
     })
     ?.then(
@@ -62,12 +64,12 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="processes">
-    <table>
+    <table class="w-full">
       <thead>
-        <th class="processes__column processes__column--name">Name</th>
-        <th class="processes__column processes__column--user">User</th>
-        <th class="processes__column processes__column--cpu">CPU</th>
-        <th class="processes__column processes__column--memory">RAM</th>
+        <th class="w-4/12">Name</th>
+        <th class="w-4/12">User</th>
+        <th class="w-2/12">CPU</th>
+        <th class="w-2/12">RAM</th>
       </thead>
       <tbody>
         <tr
@@ -83,22 +85,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </table>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.processes {
-  &__column {
-    &--name {
-      width: 45%;
-    }
-
-    &--user {
-      width: 25%;
-    }
-
-    &--cpu,
-    &--memory {
-      width: 15%;
-    }
-  }
-}
-</style>

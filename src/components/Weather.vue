@@ -22,50 +22,73 @@ type OpenWeatherResponse = {
 
 const data: Ref<OpenWeatherResponse | null> = ref(null);
 
-const params: object = {
-  params: {
-    lat: process.env.VUE_APP_LATITUDE,
-    lon: process.env.VUE_APP_LONGITUDE,
-    appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-  },
-  paramsSerializer: null,
-};
-
 const $axios = inject(AxiosKey);
+const { VUE_APP_LATITUDE, VUE_APP_LONGITUDE, VUE_APP_OPENWEATHERMAP_API_KEY } =
+  process.env;
+
+console.table({
+  $axios,
+  VUE_APP_LATITUDE,
+  VUE_APP_LONGITUDE,
+  VUE_APP_OPENWEATHERMAP_API_KEY,
+});
+
 async function updateData() {
-  $axios
-    ?.get("https://api.openweathermap.org/data/2.5/weather", params)
-    ?.then(
-      (response: { data: OpenWeatherResponse }): object =>
-        (data.value = response.data)
-    );
+  if (
+    $axios &&
+    VUE_APP_LATITUDE &&
+    VUE_APP_LONGITUDE &&
+    VUE_APP_OPENWEATHERMAP_API_KEY
+  ) {
+    $axios
+      ?.get("https://api.openweathermap.org/data/2.5/weather", {
+        params: {
+          lat: process.env.VUE_APP_LATITUDE,
+          lon: process.env.VUE_APP_LONGITUDE,
+          appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+        },
+        paramsSerializer: undefined,
+      })
+      ?.then(
+        (response: { data: OpenWeatherResponse }): object =>
+          (data.value = response.data)
+      );
+  } else {
+    console.log("No API key or coordinates set");
+    data.value = null;
+  }
 }
 
 const kelvinToCelcius = (kelvin: number) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
 
-inject(InitialiseWidgetKey)?.(updateData);
+inject(InitialiseWidgetKey)?.(updateData, 60 * 1000);
 </script>
 <template>
-  <WidgetTemplate v-if="data" class="weather">
-    <template #header
-      >Weather
+  <WidgetTemplate
+    v-if="data"
+    class="weather"
+    body-classes="flex flex-row justify-around items-center"
+  >
+    <template #header>
+      <span>Weather</span>
       <span>
         <img
           v-for="(item, index) in data.weather"
           :key="index"
+          class="w-12 h-12"
           :src="`http://openweathermap.org/img/wn/${item.icon}@2x.png`"
         />
       </span>
     </template>
-    <div class="weather__column weather__column--temp-display">
+    <div class="flex flex-col text-center">
       <span>Current:</span>
-      <strong v-text="kelvinToCelcius(data.main.temp)" />
+      <strong class="text-4xl" v-text="kelvinToCelcius(data.main.temp)" />
     </div>
-    <div class="weather__column weather__column--temp-display">
+    <div class="flex flex-col text-center">
       <span>Feels like:</span>
-      <strong v-text="kelvinToCelcius(data.main.feels_like)" />
+      <strong class="text-4xl" v-text="kelvinToCelcius(data.main.feels_like)" />
     </div>
     <div class="weather__other-info">
       <div
@@ -91,48 +114,3 @@ inject(InitialiseWidgetKey)?.(updateData);
     </div>
   </WidgetTemplate>
 </template>
-
-<style lang="scss">
-.weather {
-  .widget__header {
-    img {
-      max-height: 3.5rem;
-    }
-  }
-
-  .widget__body {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  &__column {
-    display: flex;
-    flex-direction: column;
-
-    &--temp-display {
-      font-weight: bold;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-
-      font-size: 1.5rem;
-
-      strong {
-        font-size: 3rem;
-      }
-    }
-
-    &--other-info {
-      justify-content: flex-start;
-      align-items: stretch;
-      padding: 0.5rem;
-    }
-  }
-
-  &__row {
-    & + & {
-      margin-top: 1rem;
-    }
-  }
-}
-</style>
