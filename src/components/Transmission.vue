@@ -3,18 +3,20 @@ import { inject, Ref, ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/symbols";
 
-type TorrentResponse = {
-  addedDate: number;
-  id: number;
-  name: string;
-  eta: number;
-  etaIdle: number;
-  leftUntilDone: number;
-  percentDone: number;
-  rateDownload: number;
-  isFinished: string;
-  magnetLink: string;
-};
+class TorrentResponse {
+  constructor(
+    public addedDate: string = "",
+    public id: number = -1,
+    public name: string = "",
+    public eta: number = -1,
+    public etaIdle: number = -1,
+    public leftUntilDone: number = -1,
+    public percentDone: number = -1,
+    public rateDownload: number = -1,
+    public isFinished: string = "",
+    public magnetLink: string = ""
+  ) {}
+}
 
 type TorrentProcessed = TorrentResponse & {
   downloadRateHumanReadable: string;
@@ -38,18 +40,7 @@ function updateData() {
   $axios
     ?.get("/transmission", {
       params: {
-        fields: [
-          "addedDate",
-          "id",
-          "name",
-          "eta",
-          "etaIdle",
-          "leftUntilDone",
-          "percentDone",
-          "rateDownload",
-          "isFinished",
-          "magnetLink",
-        ],
+        fields: Object.keys(new TorrentResponse()),
       },
     })
     .then(

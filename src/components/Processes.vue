@@ -3,12 +3,14 @@ import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { inject, Ref, ref } from "vue";
 
-type ProcessesResponse = {
-  name: string;
-  username: string;
-  cpu_percent: number;
-  memory_percent: number;
-};
+class ProcessesResponse {
+  constructor(
+    public name: string = "",
+    public username: string = "",
+    public cpu_percent: number = -1,
+    public memory_percent: number = -1
+  ) {}
+}
 
 type ProcessesProcessed = ProcessesResponse & {
   cpu_percent_toFixed: string;
@@ -22,7 +24,7 @@ function updateData() {
   $axios
     ?.get("/processes", {
       params: {
-        arguments: ["name", "username", "cpu_percent", "memory_percent"],
+        arguments: Object.keys(new ProcessesResponse()),
       },
     })
     ?.then(

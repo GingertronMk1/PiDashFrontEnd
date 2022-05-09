@@ -24,26 +24,41 @@ const data: Ref<OpenWeatherResponse | null> = ref(null);
 
 const $axios = inject(AxiosKey);
 async function updateData() {
-  $axios
-    ?.get("https://api.openweathermap.org/data/2.5/weather", {
-      params: {
-        lat: process.env.VUE_APP_LATITUDE,
-        lon: process.env.VUE_APP_LONGITUDE,
-        appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-      },
-      paramsSerializer: null,
-    })
-    ?.then(
-      (response: { data: OpenWeatherResponse }): object =>
-        (data.value = response.data)
-    );
+  const {
+    VUE_APP_LATITUDE,
+    VUE_APP_LONGITUDE,
+    VUE_APP_OPENWEATHERMAP_API_KEY,
+  } = process.env;
+  if (
+    $axios &&
+    VUE_APP_LATITUDE &&
+    VUE_APP_LONGITUDE &&
+    VUE_APP_OPENWEATHERMAP_API_KEY
+  ) {
+    $axios
+      ?.get("https://api.openweathermap.org/data/2.5/weather", {
+        params: {
+          lat: process.env.VUE_APP_LATITUDE,
+          lon: process.env.VUE_APP_LONGITUDE,
+          appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+        },
+        paramsSerializer: undefined,
+      })
+      ?.then(
+        (response: { data: OpenWeatherResponse }): object =>
+          (data.value = response.data)
+      );
+  } else {
+    console.log("No API key or coordinates set");
+    data.value = null;
+  }
 }
 
 const kelvinToCelcius = (kelvin: number) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
 
-inject(InitialiseWidgetKey)?.(updateData);
+inject(InitialiseWidgetKey)?.(updateData, 60 * 1000);
 </script>
 <template>
   <WidgetTemplate

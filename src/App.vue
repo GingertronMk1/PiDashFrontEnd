@@ -21,12 +21,16 @@ setInterval(() => {
 }, 1000);
 </script>
 <template>
-  <Time />
-  <CPU />
-  <Processes />
-  <Temperatures />
-  <Memory />
-  <Disk />
-  <Transmission />
-  <Weather />
+  <div
+    class="flex flex-col flex-wrap w-full h-full justify-start items-center p-2"
+  >
+    <Time />
+    <CPU />
+    <Processes />
+    <Temperatures />
+    <Memory />
+    <Disk />
+    <Transmission />
+    <Weather />
+  </div>
 </template>

@@ -12,5 +12,5 @@ function updateData() {
 inject(InitialiseWidgetKey)?.(updateData, 10, false);
 </script>
 <template>
-  <h1 class="time widget text-8xl" v-text="data" />
+  <h1 class="widget text-8xl" v-text="data" />
 </template>
