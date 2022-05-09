@@ -1,20 +1,34 @@
-<script setup>
+<script setup lang="ts">
+import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { ref } from "vue";
+import { inject, Ref, ref } from "vue";
 
-const data = ref(null);
+type ProcessesResponse = {
+  name: string;
+  username: string;
+  cpu_percent: number;
+  memory_percent: number;
+};
 
+type ProcessesProcessed = ProcessesResponse & {
+  cpu_percent_toFixed: string;
+  memory_percent_toFixed: string;
+};
+
+const data: Ref<ProcessesProcessed[] | null> = ref(null);
+
+const $axios = inject(AxiosKey);
 function updateData() {
-  axios
-    .get("/processes", {
+  $axios
+    ?.get("/processes", {
       params: {
         arguments: ["name", "username", "cpu_percent", "memory_percent"],
       },
     })
-    .then(
+    ?.then(
       ({ data: newData }) =>
         (data.value = newData
-          .reduce((acc, item) => {
+          .reduce((acc: ProcessesResponse[], item: ProcessesResponse) => {
             if (!acc.map(({ name }) => name).includes(item.name)) {
               acc.push(item);
             } else {
@@ -29,14 +43,14 @@ function updateData() {
             }
             return acc;
           }, [])
-          .sort((a, b) => {
+          .sort((a: ProcessesResponse, b: ProcessesResponse) => {
             const cpu_diff = b.cpu_percent - a.cpu_percent;
             if (cpu_diff !== 0) {
               return cpu_diff;
             }
             return b.memory_percent - a.memory_percent;
           })
-          .map((item) => ({
+          .map((item: ProcessesResponse) => ({
             ...item,
             cpu_percent_toFixed: item.cpu_percent.toFixed(0) + "%",
             memory_percent_toFixed: item.memory_percent.toFixed(0) + "%",
@@ -44,7 +58,7 @@ function updateData() {
     );
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="processes">
@@ -57,7 +71,7 @@ initialiseWidget(updateData);
       </thead>
       <tbody>
         <tr
-          v-for="(process, index) in data.filter((item, index) => index < 5)"
+          v-for="(process, index) in data.filter((item: ProcessesProcessed, index: number) => index < 5)"
           :key="index"
         >
           <td v-text="process.name" />

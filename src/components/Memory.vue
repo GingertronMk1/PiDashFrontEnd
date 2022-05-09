@@ -1,19 +1,32 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { inject, Ref, ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
+import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
 
-const data = ref({});
+type MemoryData = {
+  available: string;
+  total: string;
+};
 
+type MemoryResponse = {
+  available: number;
+  total: number;
+};
+
+const data: Ref<MemoryData | null> = ref(null);
+
+const $axios = inject(AxiosKey);
 function updateData() {
-  axios.get("/memory").then(({ data: { available, total } }) => {
+  $axios?.get("/memory")?.then((response: { data: MemoryResponse }) => {
+    const { available, total } = response.data;
     data.value = {
-      available: (Number.parseInt(available) / 1024 / 1024).toFixed(2),
-      total: (Number.parseInt(total) / 1024 / 1024).toFixed(2),
-    };
+      available: (available / 1024 / 1024).toFixed(2),
+      total: (total / 1024 / 1024).toFixed(2),
+    } as MemoryData;
   });
 }
 
-initialiseWidget(updateData);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data">

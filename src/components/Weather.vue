@@ -1,27 +1,51 @@
-<script setup>
+<script setup lang="ts">
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { computed, ref } from "vue";
+import { inject, ref, Ref } from "vue";
+import { InitialiseWidgetKey, AxiosKey } from "@/symbols";
+import axios from "axios";
 
-const data = ref(null);
+type OpenWeatherResponse = {
+  weather: { icon: string }[];
+  main: {
+    temp: number;
+    pressure: number;
+    humidity: number;
+    temp_min: number;
+    temp_max: number;
+    feels_like: number;
+  };
+  sys: {
+    sunrise: string;
+    sunset: string;
+  };
+};
 
+const data: Ref<OpenWeatherResponse | null> = ref(null);
+
+const params: object = {
+  params: {
+    lat: process.env.VUE_APP_LATITUDE,
+    lon: process.env.VUE_APP_LONGITUDE,
+    appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+  },
+  paramsSerializer: null,
+};
+
+const $axios = inject(AxiosKey);
 async function updateData() {
-  data.value = await axios
-    .get("https://api.openweathermap.org/data/2.5/weather", {
-      params: {
-        lat: process.env.VUE_APP_LATITUDE,
-        lon: process.env.VUE_APP_LONGITUDE,
-        appid: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
-      },
-      paramsSerializer: null,
-    })
-    .then(({ data }) => data);
+  $axios
+    ?.get("https://api.openweathermap.org/data/2.5/weather", params)
+    ?.then(
+      (response: { data: OpenWeatherResponse }): object =>
+        (data.value = response.data)
+    );
 }
 
-const kelvinToCelcius = (kelvin) => {
+const kelvinToCelcius = (kelvin: number) => {
   return `${(kelvin - 273.15).toFixed(1)}°C`;
 };
 
-initialiseWidget(updateData, 60000);
+inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data" class="weather">
