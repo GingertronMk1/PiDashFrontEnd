@@ -21,9 +21,7 @@ setInterval(() => {
 }, 1000);
 </script>
 <template>
-  <div
-    class="flex flex-col flex-wrap w-full h-full justify-start items-center p-2"
-  >
+  <div class="flex flex-col flex-wrap w-full h-full justify-start items-center">
     <Time />
     <CPU />
     <Processes />

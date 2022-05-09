@@ -23,12 +23,17 @@ type OpenWeatherResponse = {
 const data: Ref<OpenWeatherResponse | null> = ref(null);
 
 const $axios = inject(AxiosKey);
+const { VUE_APP_LATITUDE, VUE_APP_LONGITUDE, VUE_APP_OPENWEATHERMAP_API_KEY } =
+  process.env;
+
+console.table({
+  $axios,
+  VUE_APP_LATITUDE,
+  VUE_APP_LONGITUDE,
+  VUE_APP_OPENWEATHERMAP_API_KEY,
+});
+
 async function updateData() {
-  const {
-    VUE_APP_LATITUDE,
-    VUE_APP_LONGITUDE,
-    VUE_APP_OPENWEATHERMAP_API_KEY,
-  } = process.env;
   if (
     $axios &&
     VUE_APP_LATITUDE &&
@@ -64,7 +69,7 @@ inject(InitialiseWidgetKey)?.(updateData, 60 * 1000);
   <WidgetTemplate
     v-if="data"
     class="weather"
-    body-classes="flex flex-row justify-between items-center"
+    body-classes="flex flex-row justify-around items-center"
   >
     <template #header>
       <span>Weather</span>
