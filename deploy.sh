@@ -1,1 +1,3 @@
-git pull -X theirs --no-edit --allow-unrelated-histories
+#!/bin/sh
+
+git reset --hard origin/built-main
