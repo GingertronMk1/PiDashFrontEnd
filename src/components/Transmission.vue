@@ -21,6 +21,7 @@ class TorrentResponse {
 type TorrentProcessed = TorrentResponse & {
   downloadRateHumanReadable: string;
   etaHumanReadable: string;
+  percentDoneHumanReadable: string;
   torrentNameSplit: string[];
 };
 
@@ -56,6 +57,9 @@ function updateData() {
             downloadRateHumanReadable: `${$bytesToOther?.(
               torrent.rateDownload
             )}/s`,
+            percentDoneHumanReadable: `${(torrent.percentDone * 100).toFixed(
+              2
+            )}%`,
             etaHumanReadable: dateToHumanReadable(torrent.eta) ?? "Unknown",
             torrentNameSplit: torrent.name.split(/([^A-Za-z0-9\[\]\(\)]+)/g),
           }))
@@ -71,12 +75,15 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data.length" class="transmission-widget">
-    <template #header>Transmission</template>
+    <template #header>
+      <span>Transmission</span>
+      <i class="fa-solid fa-cloud-arrow-down" />
+    </template>
     <table class="w-full">
       <thead>
         <th class="w-3/4">Name</th>
         <th class="w-1/8">% done</th>
-        <th class="w-1/8">Download Speed</th>
+        <th class="w-1/8"><i class="fa-solid fa-arrow-down mr-2" />Speed</th>
       </thead>
       <tbody>
         <tr v-for="(torrent, index) in data" :key="`torrent${index}`">
@@ -87,14 +94,8 @@ inject(InitialiseWidgetKey)?.(updateData);
               v-text="part"
             />
           </td>
-          <td
-            class="transmission-widget__number-cell"
-            v-text="`${(torrent.percentDone * 100).toFixed(2)}%`"
-          />
-          <td
-            class="transmission-widget__number-cell"
-            v-text="torrent.downloadRateHumanReadable"
-          />
+          <td class="text-center" v-text="torrent.percentDoneHumanReadable" />
+          <td class="text-center" v-text="torrent.downloadRateHumanReadable" />
         </tr>
       </tbody>
     </table>

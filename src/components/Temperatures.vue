@@ -44,7 +44,10 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data">
-    <template #header>Temperatures</template>
+    <template #header>
+      <span>Temperatures</span>
+      <i class="fa-solid fa-temperature-three-quarters" />
+    </template>
     <span v-for="temps in data" :key="temps.key">
       <strong v-text="temps.title" />: <span v-text="temps.temps" />
     </span>

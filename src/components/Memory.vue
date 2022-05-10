@@ -30,7 +30,10 @@ inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
   <WidgetTemplate v-if="data">
-    <template #header>Memory</template>
+    <template #header>
+      <span>Memory</span>
+      <i class="fa-solid fa-memory" />
+    </template>
     <span v-text="`${data.available}MB available of ${data.total}MB`" />
   </WidgetTemplate>
 </template>

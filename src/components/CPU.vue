@@ -30,7 +30,10 @@ const defineBarColour = (core: number) => {
 </script>
 <template>
   <WidgetTemplate v-if="data" class="cpu-widget">
-    <template #header>CPU</template>
+    <template #header>
+      <span>CPU</span>
+      <i class="fa-solid fa-microchip" />
+    </template>
     <div class="space-y-1">
       <div
         v-for="(core, index) in data"

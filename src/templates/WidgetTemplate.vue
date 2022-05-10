@@ -18,7 +18,7 @@ const computedBodyClasses = computed(() => {
   <div class="widget">
     <h3
       v-if="$slots.header"
-      class="flex flex-row justify-between items-center text-3xl"
+      class="flex flex-row justify-between items-center text-3xl font-bold mb-2"
     >
       <slot name="header" />
     </h3>
