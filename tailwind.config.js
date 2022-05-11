@@ -4,4 +4,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  safelist: process.env.NODE_ENV !== "production" ? [{ pattern: /.*/ }] : [],
 };
