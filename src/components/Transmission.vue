@@ -74,11 +74,8 @@ function updateData() {
 inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
-  <WidgetTemplate v-if="data.length" class="transmission-widget">
-    <template #header>
-      <span>Transmission</span>
-      <i class="fa-solid fa-cloud-arrow-down" />
-    </template>
+  <WidgetTemplate v-if="data.length" header-icon="fa-solid fa-cloud-arrow-down">
+    <template #header> Transmission </template>
     <table class="w-full">
       <thead class="border-b">
         <th class="w-3/4">Name</th>

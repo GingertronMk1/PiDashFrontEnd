@@ -71,16 +71,14 @@ inject(InitialiseWidgetKey)?.(updateData, 60 * 1000);
     class="weather"
     body-classes="flex flex-row justify-around items-center"
   >
-    <template #header>
-      <span>Weather</span>
-      <span>
-        <img
-          v-for="(item, index) in data.weather"
-          :key="index"
-          class="w-12 h-12"
-          :src="`http://openweathermap.org/img/wn/${item.icon}@2x.png`"
-        />
-      </span>
+    <template #header> Weather </template>
+    <template #header_additional>
+      <img
+        v-for="(item, index) in data.weather"
+        :key="index"
+        class="w-12 h-12"
+        :src="`http://openweathermap.org/img/wn/${item.icon}@2x.png`"
+      />
     </template>
     <div class="flex flex-col text-center">
       <span>Current:</span>

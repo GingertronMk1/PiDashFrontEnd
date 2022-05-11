@@ -29,11 +29,8 @@ function updateData() {
 inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
-  <WidgetTemplate v-if="data">
-    <template #header>
-      <span>Memory</span>
-      <i class="fa-solid fa-memory" />
-    </template>
+  <WidgetTemplate v-if="data" header-icon="fa-solid fa-memory">
+    <template #header> Memory </template>
     <span v-text="`${data.available}MB available of ${data.total}MB`" />
   </WidgetTemplate>
 </template>

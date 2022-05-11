@@ -54,11 +54,8 @@ function updateData() {
 inject(InitialiseWidgetKey)?.(updateData);
 </script>
 <template>
-  <WidgetTemplate v-if="data">
-    <template #header>
-      <span>Disk</span>
-      <i class="fa-solid fa-database" />
-    </template>
+  <WidgetTemplate v-if="data" header-icon="fa-solid fa-database">
+    <template #header> Disk </template>
     <table class="w-full">
       <thead class="border-b">
         <th class="w-1/5">Mount Point</th>
