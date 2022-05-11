@@ -80,7 +80,7 @@ inject(InitialiseWidgetKey)?.(updateData);
       <i class="fa-solid fa-cloud-arrow-down" />
     </template>
     <table class="w-full">
-      <thead>
+      <thead class="border-b">
         <th class="w-3/4">Name</th>
         <th class="w-1/8">% done</th>
         <th class="w-1/8"><i class="fa-solid fa-arrow-down mr-2" />Speed</th>

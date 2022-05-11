@@ -65,7 +65,7 @@ inject(InitialiseWidgetKey)?.(updateData);
 <template>
   <WidgetTemplate v-if="data" class="processes">
     <table class="w-full">
-      <thead>
+      <thead class="border-b">
         <th class="w-4/12">Name</th>
         <th class="w-4/12">User</th>
         <th class="w-2/12">CPU</th>

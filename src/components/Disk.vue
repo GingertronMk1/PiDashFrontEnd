@@ -60,7 +60,7 @@ inject(InitialiseWidgetKey)?.(updateData);
       <i class="fa-solid fa-database" />
     </template>
     <table class="w-full">
-      <thead>
+      <thead class="border-b">
         <th class="w-1/5">Mount Point</th>
         <th class="w-1/5">Used</th>
         <th class="w-1/5">Free</th>
