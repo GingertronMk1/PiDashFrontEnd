@@ -67,10 +67,10 @@ inject(InitialiseWidgetKey)?.(updateData);
       <tbody>
         <tr v-for="(stats, mountpoint) in data" :key="mountpoint">
           <td v-text="mountpoint" />
-          <td v-text="stats.used" />
-          <td v-text="stats.free" />
-          <td v-text="stats.total" />
-          <td v-text="stats.percent" />
+          <td class="text-center" v-text="stats.used" />
+          <td class="text-center" v-text="stats.free" />
+          <td class="text-center" v-text="stats.total" />
+          <td class="text-center" v-text="stats.percent" />
         </tr>
       </tbody>
     </table>

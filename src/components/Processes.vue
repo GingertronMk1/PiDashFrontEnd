@@ -78,8 +78,8 @@ inject(InitialiseWidgetKey)?.(updateData);
         >
           <td v-text="process.name" />
           <td v-text="process.username" />
-          <td v-text="process.cpu_percent_toFixed" />
-          <td v-text="process.memory_percent_toFixed" />
+          <td class="text-center" v-text="process.cpu_percent_toFixed" />
+          <td class="text-center" v-text="process.memory_percent_toFixed" />
         </tr>
       </tbody>
     </table>
