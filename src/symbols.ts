@@ -1,9 +1,9 @@
 import { InjectionKey } from "vue";
 import { AxiosInstance } from "axios";
 
-const AxiosKey: InjectionKey<AxiosInstance> = Symbol("AxiosKey");
+export const AxiosKey: InjectionKey<AxiosInstance> = Symbol("AxiosKey");
 
-const axios = require("axios");
+export const axios = require("axios");
 axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
 axios.defaults.paramsSerializer = (params: object) => {
   return Object.entries(params)
@@ -16,10 +16,10 @@ axios.defaults.paramsSerializer = (params: object) => {
     .join("&");
 };
 
-const BytesToOtherKey: InjectionKey<(bytes: number) => string> =
+export const BytesToOtherKey: InjectionKey<(bytes: number) => string> =
   Symbol("BytesToOtherKey");
 
-function bytesToOther(bytes: number): string {
+export function bytesToOther(bytes: number): string {
   if (bytes === 0) return "0B";
   const prefixes = ["", "K", "M", "G", "T", "P"];
   const base = 1024;
@@ -29,12 +29,16 @@ function bytesToOther(bytes: number): string {
   return (bytes / base ** logFloored).toFixed(2) + prefixes[logFloored] + "B";
 }
 
-const InitialiseWidgetKey: InjectionKey<
-  (callback: Function, interval?: number, stopOnLostFocus?: boolean) => void
+export const InitialiseWidgetKey: InjectionKey<
+  (
+    callback: () => Promise<any>,
+    interval?: number,
+    stopOnLostFocus?: boolean
+  ) => void
 > = Symbol("InitialiseWidgetKey");
 
-function initialiseWidget(
-  callback: Function,
+export function initialiseWidget(
+  callback: () => Promise<any>,
   interval: number = 1000,
   stopOnLostFocus: boolean = true
 ) {

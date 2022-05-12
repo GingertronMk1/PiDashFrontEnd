@@ -38,7 +38,7 @@ function dateToHumanReadable(date: number) {
 const $axios = inject(AxiosKey);
 const $bytesToOther = inject(BytesToOtherKey);
 function updateData() {
-  $axios
+  return $axios
     ?.get("/transmission", {
       params: {
         fields: Object.keys(new TorrentResponse()),
