@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, ref, Ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/symbols";
+import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/bootstrap";
 
 type DiskInfoResponse = {
   [mountpoint: string]: DiskInfoPart;

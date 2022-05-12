@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import Symbols from "./symbols";
+import * as Symbols from "./bootstrap";
 import "./assets/style.css";
 
 createApp(App)

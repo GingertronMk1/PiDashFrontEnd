@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, Ref, ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
+import { AxiosKey, InitialiseWidgetKey } from "@/bootstrap";
 
 type MemoryData = {
   available: string;

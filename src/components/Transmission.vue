@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, Ref, ref } from "vue";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
-import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/symbols";
+import { AxiosKey, BytesToOtherKey, InitialiseWidgetKey } from "@/bootstrap";
 
 class TorrentResponse {
   constructor(

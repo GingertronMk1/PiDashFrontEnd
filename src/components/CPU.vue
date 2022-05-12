@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { inject, ref, Ref } from "vue";
-import { InitialiseWidgetKey, AxiosKey } from "@/symbols";
+import { InitialiseWidgetKey, AxiosKey } from "@/bootstrap";
 
 const data: Ref<number[]> = ref([]);
 

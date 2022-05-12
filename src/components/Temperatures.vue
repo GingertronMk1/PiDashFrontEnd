@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AxiosKey, InitialiseWidgetKey } from "@/symbols";
+import { AxiosKey, InitialiseWidgetKey } from "@/bootstrap";
 import WidgetTemplate from "@/templates/WidgetTemplate.vue";
 import { inject, Ref, ref } from "vue";
 

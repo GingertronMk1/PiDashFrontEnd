@@ -49,12 +49,3 @@ export function initialiseWidget(
     }
   }, interval);
 }
-
-export default {
-  axios,
-  bytesToOther,
-  initialiseWidget,
-  InitialiseWidgetKey,
-  AxiosKey,
-  BytesToOtherKey,
-};
