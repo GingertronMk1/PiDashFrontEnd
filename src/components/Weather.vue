@@ -26,13 +26,6 @@ const $axios = inject(AxiosKey);
 const { VUE_APP_LATITUDE, VUE_APP_LONGITUDE, VUE_APP_OPENWEATHERMAP_API_KEY } =
   process.env;
 
-console.table({
-  $axios,
-  VUE_APP_LATITUDE,
-  VUE_APP_LONGITUDE,
-  VUE_APP_OPENWEATHERMAP_API_KEY,
-});
-
 async function updateData() {
   if (
     $axios &&
@@ -54,7 +47,7 @@ async function updateData() {
           (data.value = response.data)
       );
   } else {
-    console.log("No API key or coordinates set");
+    console.error("No API key or coordinates set");
     data.value = null;
   }
 }

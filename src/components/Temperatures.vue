@@ -26,7 +26,6 @@ function updateData() {
     ?.then(({ data: newData }: { data: TempsResponse }) => {
       const ret = Object.keys(newData).map((key: string) => {
         const { current }: TempsResponsePart = newData[key];
-        console.log(current);
         return {
           key,
           title: key
