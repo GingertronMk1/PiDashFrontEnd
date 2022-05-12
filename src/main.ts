@@ -3,9 +3,9 @@ import App from "./App.vue";
 import { InitialiseWidgetKey, AxiosKey, BytesToOtherKey } from "./symbols";
 import "./assets/style.css";
 
-const $axios = require("axios");
-$axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
-$axios.defaults.paramsSerializer = (params: object) => {
+const axios = require("axios");
+axios.defaults.baseURL = process.env.VUE_APP_PI_URL ?? "";
+axios.defaults.paramsSerializer = (params: object) => {
   return Object.entries(params)
     .map(([key, value]) => {
       if (Array.isArray(value)) {
@@ -42,5 +42,5 @@ function initialiseWidget(
 createApp(App)
   .provide(InitialiseWidgetKey, initialiseWidget)
   .provide(BytesToOtherKey, bytesToOther)
-  .provide(AxiosKey, $axios)
+  .provide(AxiosKey, axios)
   .mount("#app");
